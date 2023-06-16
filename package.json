@@ -1,0 +1,23 @@
+{
+  "name": "playwright-boilerplate",
+  "version": "1.0.0",
+  "description": "NodeJs Playwright boilerplate project",
+  "main": "index.js",
+  "scripts": {
+    "test": "npx playwright test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/angelo-loria/playwright-boilerplate.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/angelo-loria/playwright-boilerplate/issues"
+  },
+  "homepage": "https://github.com/angelo-loria/playwright-boilerplate#readme",
+  "devDependencies": {
+    "@playwright/test": "^1.35.1"
+  }
+}
