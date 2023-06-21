@@ -24,7 +24,6 @@ export default defineConfig({
     ? [
         ["line"],
         ["html", { open: "never" }],
-        ["playwright-tesults-reporter", { "tesults-target": "token" }],
       ]
     : "html",
   /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
