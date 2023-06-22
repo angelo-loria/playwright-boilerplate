@@ -6,7 +6,9 @@
   "scripts": {
     "format": "prettier --write .",
     "test": "playwright test",
-    "test:ci": "CI=true playwright test"
+    "test:chromium": "playwright test --project=chromium",
+    "test:ci": "CI=true playwright test",
+    "test:debug": "playwright test --debug --project=chromium"
   },
   "repository": {
     "type": "git",
