@@ -9,7 +9,7 @@ This is an example of a Playwright project that uses the page object model desig
 The site under test is [Automation Exercise](https://www.automationexercise.com/) and tests were derived from the [Automation Exercise test cases](https://www.automationexercise.com/test_cases).
 
 
-### The `pageObjects` Directory
+## The `pageObjects` Directory
     pageObjects
         ├── base.page.ts
         ├── base.pageComponent.ts
@@ -31,6 +31,9 @@ This directory contains our base page class, base page component class, and all 
 
 
 
-
-
+## Github Actions
+I've made some changes to the Github Actions workflow that Playwright provides.
+* I've added caching for the browser binaries. This will speed up the workflow by not having to download the browser binaries every time the workflow runs. [See line 37 of the Actions workflow for the first of the steps involved in caching the binaries.](https://github.com/angelo-loria/playwright-boilerplate/blob/6521fe30026b45b03672bfb66d5898d3b3ef9d81/.github/workflows/playwright.yml#L37)
+* I've added a step to upload the test report to Github Pages. Note that this report is overwritten on every test run. See the badge at the top of this README for a link to the latest test report and [line 71 of the Actions workflow for the steps to upload and deploy the report to Github Pages.](https://github.com/angelo-loria/playwright-boilerplate/blob/6521fe30026b45b03672bfb66d5898d3b3ef9d81/.github/workflows/playwright.yml#L71)
+* I'm also using [test-reporter](https://github.com/dorny/test-reporter) for displaying a test report within Actions itself. [Here's what this report looks like](https://github.com/angelo-loria/playwright-boilerplate/actions/runs/5394266421/jobs/9795222055).
 

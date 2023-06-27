@@ -54,6 +54,7 @@ jobs:
         run: npx playwright install-deps
       - name: Run Playwright tests
         run: npm run test:ci
+      # https://github.com/dorny/test-reporter
       - name: Test Report
         uses: dorny/test-reporter@v1
         if: always()
