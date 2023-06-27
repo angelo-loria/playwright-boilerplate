@@ -29,7 +29,8 @@ This directory contains our base page class, base page component class, and all 
 * `pageFixture.ts`
     * This is a [fixture](https://playwright.dev/docs/test-fixtures) used to instantiate all of our page objects so they can be used across all of our tests, saving us the hassle of importing and instantiating them in every spec file. [You can see how the page objects are passed into our test as parameters](https://github.com/angelo-loria/playwright-boilerplate/blob/a4cb51bae85703ab7783988a32b733f5148a59da/tests/user/registerUser.spec.ts#L4), which can then be used throughout the test.
 
-
+## Accessibility Testing
+I'm using the `@axe-core/playwright` for accessibility testing in [axe.spec.ts](https://github.com/angelo-loria/playwright-boilerplate/blob/main/tests/accessibility/axe.spec.ts). These are failing miserably on the test site I'm using.
 
 ## Github Actions
 I've made some changes to the Github Actions workflow that Playwright provides.
