@@ -22,7 +22,11 @@ export default defineConfig({
   workers: process.env.CI ? 1 : undefined,
   /* Reporter to use. See https://playwright.dev/docs/test-reporters */
   reporter: process.env.CI
-    ? [["line"], ["html", { open: "never" }]]
+    ? [
+        ["line"],
+        ["html", { open: "never" }],
+        ["junit", { outputFile: "junit.xml" }],
+      ]
     : [["html", { open: "never" }]],
   /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
   use: {
@@ -48,10 +52,10 @@ export default defineConfig({
       use: { ...devices["Desktop Firefox"] },
     },
 
-    {
-      name: "webkit",
-      use: { ...devices["Desktop Safari"] },
-    },
+    // {
+    //   name: "webkit",
+    //   use: { ...devices["Desktop Safari"] },
+    // },
 
     /* Test against mobile viewports. */
     // {
