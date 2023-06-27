@@ -45,11 +45,13 @@ export default defineConfig({
     {
       name: "chromium",
       use: { ...devices["Desktop Chrome"] },
+      testMatch: /.*axe.spec.ts/,
     },
 
     {
       name: "firefox",
       use: { ...devices["Desktop Firefox"] },
+      testIgnore: /.*axe.spec.ts/,
     },
 
     // {
