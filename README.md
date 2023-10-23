@@ -6,8 +6,9 @@
 
 This is an example of a Playwright project that uses the page object model design pattern. In general, [Playwright best practices](https://playwright.dev/docs/best-practices) are followed where possible and the [configuration](https://github.com/angelo-loria/playwright-boilerplate/blob/main/playwright.config.ts) is largely the default configuration generated when you install Playwright. 
 
-The site under test is [Automation Exercise](https://www.automationexercise.com/) and tests were derived from the [Automation Exercise test cases](https://www.automationexercise.com/test_cases).
+The site under test is [Acme Store](https://demo.vercel.store/), a demo ecommerce store built with Next.js, Vercel, and Shopify. 
 
+*Previously, the site under test was [Automation Exercise](https://www.automationexercise.com/). This site was quite outdated and had random pop-up ads that would appear, which made it difficult to test. The Acme Store is far more mordern and a much better candidate for a Playwright boilerplate project in 2023.*
 
 ## The `pageObjects` Directory
     pageObjects
