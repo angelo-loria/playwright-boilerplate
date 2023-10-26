@@ -45,7 +45,6 @@ export default defineConfig({
     {
       name: "chromium",
       use: { ...devices["Desktop Chrome"] },
-      testMatch: /.*axe.spec.ts/,
     },
 
     {

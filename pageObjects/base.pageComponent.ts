@@ -1,5 +1,7 @@
-import type { Locator, Page } from "@playwright/test";
+import type { Locator} from "@playwright/test";
 
 export abstract class BasePageComponent {
-  constructor(public readonly host: Locator, public readonly page: Page) {}
+  constructor(public readonly host: Locator) {
+    
+  }
 }
