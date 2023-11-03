@@ -1,6 +1,6 @@
 import { test, expect } from "../../pageObjects/pageFixture";
 
-test.describe("home page", () => {
+test.describe("search page", () => {
   test.beforeEach(async ({ searchPage }) => {
     await searchPage.open();
   });

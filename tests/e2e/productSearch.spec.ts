@@ -8,7 +8,6 @@ test.describe("product search", () => {
 
     await test.step("search for product", async () => {
       await homePage.navBar.searchInput.fill("Acme Circles T-Shirt");
-
       await homePage.navBar.searchInput.press("Enter");
 
       const searchResponse = searchPage.page.waitForResponse(
