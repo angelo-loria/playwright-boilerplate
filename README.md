@@ -1,4 +1,4 @@
-[![Playwright Tests](https://github.com/angelo-loria/playwright-boilerplate/workflows/Playwright%20Tests/badge.svg)](https://github.com/angelo-loria/playwright-boilerplate/actions?query=workflow:"Playwright+Tests")
+[![Playwright Tests](https://github.com/angelo-loria/playwright-boilerplate/workflows/Playwright%20Tests/badge.svg)](https://github.com/angelo-loria/playwright-boilerplate/actions?query=workflow:"Playwright+Test")
 [![View site - GH Pages](https://img.shields.io/badge/View_Latest_Test_Report-Github_Pages-2ea44f)](https://angelo-loria.github.io/playwright-boilerplate/)
 
 
