@@ -1,5 +1,8 @@
 import { defineConfig, devices } from "@playwright/test";
 
+// used for Tesults build name
+const buildName = `${process.env.GITHUB_SHA?.slice(0, 7)}-${process.env.GITHUB_RUN_NUMBER}-${process.env.GITHUB_RUN_ATTEMPT}`;
+
 /**
  * Read environment variables from file.
  * https://github.com/motdotla/dotenv
@@ -26,12 +29,20 @@ export default defineConfig({
         ["line"],
         ["html", { open: "never" }],
         ["junit", { outputFile: "junit.xml" }],
+        ['blob', { outputDir: 'blob-report' }],
+        [
+          "playwright-tesults-reporter",
+          {
+              "tesults-target": process.env.PW_TESULTS_TOKEN,
+              "tesults-build-name": buildName,
+          },
+        ],
       ]
     : [["html", { open: "never" }]],
   /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
   use: {
     /* Base URL to use in actions like `await page.goto('/')`. */
-    baseURL: "https://www.automationexercise.com",
+    baseURL: "https://demo.vercel.store/",
     /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
     trace: "retain-on-failure",
     /* Set custom id attribute */
@@ -45,7 +56,6 @@ export default defineConfig({
     {
       name: "chromium",
       use: { ...devices["Desktop Chrome"] },
-      testMatch: /.*axe.spec.ts/,
     },
 
     {

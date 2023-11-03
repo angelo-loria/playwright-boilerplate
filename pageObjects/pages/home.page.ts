@@ -1,11 +1,14 @@
 import { BasePage } from "../base.page";
-import NavBarComponent from "../components/navBarComponent";
-import ProductCardComponents from "../components/productCardComponents";
+import CarouselCards from "../components/carouselCards";
+import NavBar from "../components/navBar";
+import ProductCards from "../components/productCards";
+import Footer from "../components/footer";
 
 export default class HomePage extends BasePage {
-  public readonly sliderCarousel = this.page.getByTestId("slider-carousel");
-  public readonly productCards = new ProductCardComponents(this.page);
-  public readonly navBar = new NavBarComponent(this.page);
+  readonly productContainers = new ProductCards(this.page).host;
+  readonly carouselItems = new CarouselCards(this.page).host;
+  readonly navBar = new NavBar(this.page);
+  readonly footer = new Footer(this.page);
 
   async open() {
     await super.open("/");
