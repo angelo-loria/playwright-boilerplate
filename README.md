@@ -1,5 +1,6 @@
-[![Playwright Tests](https://github.com/angelo-loria/playwright-boilerplate/workflows/Playwright%20Tests/badge.svg)](https://github.com/angelo-loria/playwright-boilerplate/actions?query=workflow:"Playwright+Test")
+[![Playwright Test](https://github.com/angelo-loria/playwright-boilerplate/actions/workflows/playwright-shard.yml/badge.svg?branch=main)](https://github.com/angelo-loria/playwright-boilerplate/actions/workflows/playwright-shard.yml)
 [![View site - GH Pages](https://img.shields.io/badge/View_Latest_Test_Report-Github_Pages-2ea44f)](https://angelo-loria.github.io/playwright-boilerplate/)
+[![View site - GH Pages](https://img.shields.io/badge/View_Dashboard-Tesults-398cdb)](https://www.tesults.com/angelo-loria/acme-store-demo)
 
 
 # Playwright Page Object Model Boilerplate
@@ -42,7 +43,14 @@ Test execution takes place in a job called [playwright_test](https://github.com/
 * I'm using Playwright's [sharding feature](https://playwright.dev/docs/test-shardinghttps://playwright.dev/docs/test-sharding) to run the tests in parallel. [See line 25 of the Actions workflow for the matrix configuration](https://github.com/angelo-loria/playwright-boilerplate/blob/b32c6dc4acfd69784bbb2942a865e5c1f0c56a76/.github/workflows/playwright-shard.yml#L25) and [line 64 for the step that runs the tests in parallel](https://github.com/angelo-loria/playwright-boilerplate/blob/b32c6dc4acfd69784bbb2942a865e5c1f0c56a76/.github/workflows/playwright-shard.yml#L64). Output from sharded tests is uploaded for use in the reporting job. 
 
 ### Reporting
-Reporting is done in [separate job](https://github.com/angelo-loria/playwright-boilerplate/blob/b32c6dc4acfd69784bbb2942a865e5c1f0c56a76/.github/workflows/playwright-shard.yml#L84) that executes after all test shard execution has completed. 
-* Test results from sharded tests are combined into a single report and uploaded to Github Pages. See the badge at the top of this README for a link to the latest test report. I've added a step to automatically [comment on the pull request with a link to the report](https://github.com/angelo-loria/playwright-boilerplate/pull/11#issuecomment-1792545629).
-* I'm also using [dorny/test-reporter](https://github.com/dorny/test-reporter) for displaying a test report within Actions itself. [Here's what this report looks like](https://github.com/angelo-loria/playwright-boilerplate/actions/runs/6747111338/job/18342580846).
+I'm using multiple methods of reporting here. Reporting tasks are done in a [separate job](https://github.com/angelo-loria/playwright-boilerplate/blob/b32c6dc4acfd69784bbb2942a865e5c1f0c56a76/.github/workflows/playwright-shard.yml#L84) that executes after all test shard execution has completed. 
 
+#### Github Pages
+* Test results from sharded tests are combined into a single report and uploaded to Github Pages. See the badge at the top of this README for a link to the latest test report. I've added a step to automatically [comment on the pull request with a link to the report](https://github.com/angelo-loria/playwright-boilerplate/pull/11#issuecomment-1792545629).
+
+#### dorny/test-reporter
+* I'm also using [dorny/test-reporter](https://github.com/dorny/test-reporter) for displaying a test report within Actions itself. [Here's what this report looks like](https://github.com/angelo-loria/playwright-boilerplate/actions/runs/6747111338/job/18342580846). This is handy for getting a quick overview of test results and is easy to set up.
+
+#### Tesults
+
+* [Tesults](https://www.tesults.com/) is a third-party reporting service that has basic free accounts that are perfect for a boilerplate project like this (and I've also used the paid tiers in a professional setting with great success). They have a [playwright-reporter npm package](https://www.tesults.com/docs/playwright) that works with very little configuration, but I took it a step further with a quick and dirty [js script](https://github.com/angelo-loria/playwright-boilerplate/blob/feat/acme-store-refactor/.scripts/create-delete-branch-target.js) to automatically create targets in Tesults for new pull requests/branches. This script is used in our [Actions file](https://github.com/angelo-loria/playwright-boilerplate/blob/1dc17da5d6c1a79281ca9f42f823b8e97af66dbb/.github/workflows/playwright-shard.yml#L45) to set up a target for the current branch. Results are then posted to that target via the Tesults playwright-reporter. Similar to the Github Pages report, I've added a step to automatically comment on the pull request with a link to the report. You can also see the dashboard for this project here at https://www.tesults.com/angelo-loria/acme-store-demo.
