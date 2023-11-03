@@ -32,6 +32,7 @@ jobs:
           cache-dependency-path: yarn.lock
           node-version: ${{ env.NODEJS_VERSION }}
 
+      # used to create/delete branch target
       - name: Set Branch Name Environment Variable
         run: |
           # Short name for current branch. For PRs, use target branch (base ref)

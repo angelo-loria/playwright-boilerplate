@@ -17,6 +17,7 @@ async function sendCreateRequest(apiToken, desiredTargetName, repoName) {
         name: desiredTargetName,
         group: [repoName],
         build_consolidation: true,
+        public: true,
     });
 
     let requestOptions = {
