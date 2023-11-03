@@ -26,6 +26,7 @@ export default defineConfig({
         ["line"],
         ["html", { open: "never" }],
         ["junit", { outputFile: "junit.xml" }],
+        ['blob', { outputDir: 'blob-report' }],
       ]
     : [["html", { open: "never" }]],
   /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */

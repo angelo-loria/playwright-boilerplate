@@ -1,0 +1,191 @@
+name: Playwright Test
+on:
+    workflow_dispatch:
+    push:
+      branches: [main]
+    pull_request:
+      branches: [main]
+
+# Sets permissions of the GITHUB_TOKEN to allow deployment to GitHub Pages
+permissions:
+    contents: read
+    pages: write
+    id-token: write
+    checks: write # for dorny/test-reporter
+
+env:
+  NODEJS_VERSION: 18
+#   # For .yarnrc.json
+#   PACKAGES_READ_TOKEN: ${{ secrets.PACKAGES_READ_TOKEN }}
+#   PW_IDENTITY_URL: ${{ secrets.PW_IDENTITY_URL }}
+#   PW_BASE_URL: ${{ inputs.baseUrl }}
+#   PW_USER: ${{ secrets.PW_USER }}
+#   PW_PASSWORD: ${{ secrets.PW_PASSWORD }}
+#   PW_TESULTS_API_TOKEN: ${{ secrets.PW_TESULTS_API_TOKEN }}
+#   GITHUB_SHA: ${{ github.sha }} 
+#   BRANCH: ${{ inputs.branch }}
+#   APPLICATION_VERSION: ${{ inputs.applicationVersion }}
+#   REPOSITORY_NAME: ${{ inputs.repositoryName }}
+#   # TEST_SUITE used in e2e project global setup
+#   TEST_SUITE: ${{ inputs.testSuite }}
+#   WORKING_DIRECTORY: './playwright'
+
+jobs:          
+  playwright_test:
+    name: Playwright Test
+    # outputs:
+    #   blob: ${{ steps.check-artifact.outputs.exists }}
+    strategy:
+      fail-fast: false
+      matrix:
+        shard: [1/4, 2/4, 3/4, 4/4]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Setup NodeJS SDK ${{ env.NODEJS_VERSION }}
+        uses: actions/setup-node@v3
+        with:
+          cache: yarn
+          cache-dependency-path: yarn.lock
+          node-version: ${{ env.NODEJS_VERSION }}
+
+      - name: Yarn Install
+        run: yarn install
+        
+      # caching playwright browsers, see https://github.com/microsoft/playwright/issues/7249
+      - name: Store Playwright Version 
+        run: |
+          PLAYWRIGHT_VERSION=$(npm ls @playwright/test | grep @playwright | sed 's/.*@//')
+          echo "Playwright Version: $PLAYWRIGHT_VERSION"
+          echo "PLAYWRIGHT_VERSION=$PLAYWRIGHT_VERSION" >> $GITHUB_ENV
+
+      - name: Cache Browsers for Playwright Version
+        id: cache-playwright-browsers
+        uses: actions/cache@v3
+        with:
+          path: ~/.cache/ms-playwright
+          key: playwright-browsers-${{ env.PLAYWRIGHT_VERSION }}
+
+      - name: Install Playwright Browsers
+        if: steps.cache-playwright-browsers.outputs.cache-hit != 'true'
+        run: yarn playwright install --with-deps
+
+      - name: Install Playwright Dependencies
+        if: steps.cache-playwright-browsers.outputs.cache-hit == 'true'
+        run: yarn playwright install-deps
+
+      - name: Run Tests
+        run: yarn test:ci --shard ${{ matrix.shard }}
+
+      - name: Upload blob report to GitHub Actions Artifacts
+        if: always()
+        uses: actions/upload-artifact@v3
+        with:
+          name: all-blob-reports
+          path: /blob-report/
+          retention-days: 10
+          
+      # used in job output to determine if reporting should run
+    #   - name: Check for blob artifact
+    #     if: always()
+    #     uses: xSAVIKx/artifact-exists-action@v0
+    #     id: check-artifact
+    #     with:
+    #       name: all-blob-reports
+        
+      # screenshot/video/trace is stored in test-results if a test fails, otherwise empty if all tests pass
+      - name: Upload test-results to GitHub Actions Artifacts
+        if: always()
+        uses: actions/upload-artifact@v3
+        with:
+          name: test-results
+          path: /test-results/
+          retention-days: 10
+          if-no-files-found: warn
+
+    #   - name: Upload Axe Report
+    #     if: always()
+    #     uses: actions/upload-artifact@v3
+    #     with:
+    #       name: axe-html-reports
+    #       path: ${{ env.WORKING_DIRECTORY }}/axe-html-reports
+          
+  reporting:
+    if: ${{ always() }}
+    needs: playwright_test
+    name: Reporting
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v3
+    
+    - name: Setup NodeJS SDK ${{ env.NODEJS_VERSION }}
+      uses: actions/setup-node@v3
+      with:
+        cache: yarn
+        cache-dependency-path: /yarn.lock
+        node-version: ${{ env.NODEJS_VERSION }}
+    
+    - name: Yarn Install
+      run: yarn install
+    
+    - name: Download blob reports from GitHub Actions Artifacts
+      uses: actions/download-artifact@v3
+      with:
+        name: all-blob-reports
+        path: /all-blob-reports
+    
+    # test-results directory is only created when a test fails, if all pass there is no dir to download
+    - name: Check for test-results Artifact
+      uses: xSAVIKx/artifact-exists-action@v0
+      id: check-artifact
+      with:
+        name: test-results
+
+    # TODO - watch for upcoming ignore feature on this so that the above step can be removed
+    - name: Download test-results from GitHub Actions Artifacts
+      uses: actions/download-artifact@v3
+      if: ${{ steps.check-artifact.outputs.exists == 'true' }}
+      with:
+        name: test-results
+        path: /test-results/
+      
+    # xml report use by dorny-test-reporter
+    - name: Merge into XML Report
+      run: PLAYWRIGHT_JUNIT_OUTPUT_NAME=junit.xml npx playwright merge-reports --reporter=junit ./all-blob-reports
+        
+    - name: Test Report
+      uses: dorny/test-reporter@v1
+      if: success() || failure()
+      with:
+        name: Playwright Test Report
+        path: "**/junit.xml"
+        reporter: java-junit
+        fail-on-error: 'false'
+
+    - name: Merge into HTML Report
+      run: npx playwright merge-reports --reporter html ./all-blob-reports 
+        
+    - name: Setup Pages
+      uses: actions/configure-pages@v3
+
+    - name: Upload HTML report for Pages
+      uses: actions/upload-pages-artifact@v2
+      with:
+        name: github-pages
+        path: /playwright-report
+        retention-days: 14
+
+    - name: Deploy to GitHub Pages
+      id: deployment
+      uses: actions/deploy-pages@v2
+
+    - name: Message PR of Artifact Published
+      if: ${{ always() && github.event_name == 'pull_request' }}
+      uses: thollander/actions-comment-pull-request@main
+      with:
+        message: |
+          [Click here for Github Pages Playwright Report](${{ steps.deployment.outputs.page_url }})
+        comment_tag: playwright_message
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
