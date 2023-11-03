@@ -124,7 +124,7 @@ jobs:
       uses: actions/setup-node@v3
       with:
         cache: yarn
-        cache-dependency-path: /yarn.lock
+        cache-dependency-path: yarn.lock
         node-version: ${{ env.NODEJS_VERSION }}
     
     - name: Yarn Install
