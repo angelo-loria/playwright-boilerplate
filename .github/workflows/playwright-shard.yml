@@ -17,7 +17,6 @@ permissions:
 env:
   NODEJS_VERSION: 18
   TESULTS_API_TOKEN: ${{ secrets.TESULTS_API_TOKEN }}
-  # BRANCH: ${{ github.ref_name }} # used in tesults target name
 
 jobs:
   create_tesults_target:
@@ -33,7 +32,7 @@ jobs:
           cache-dependency-path: yarn.lock
           node-version: ${{ env.NODEJS_VERSION }}
 
-      - name: Set environment variables
+      - name: Set Branch Name Environment Variable
         run: |
           # Short name for current branch. For PRs, use target branch (base ref)
           BRANCH=${GITHUB_HEAD_REF:-${GITHUB_REF#refs/heads/}}
