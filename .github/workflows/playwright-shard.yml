@@ -12,6 +12,7 @@ permissions:
     pages: write
     id-token: write
     checks: write # for dorny/test-reporter
+    pull-requests: write # for leaving a comment on PR
 
 env:
   NODEJS_VERSION: 18
