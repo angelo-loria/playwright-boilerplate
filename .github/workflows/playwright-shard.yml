@@ -46,6 +46,7 @@ jobs:
 
   playwright_test:
     name: Playwright Test
+    needs: create_tesults_target
     strategy:
       fail-fast: false
       matrix:
