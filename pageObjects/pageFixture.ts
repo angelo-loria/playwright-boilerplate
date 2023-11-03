@@ -1,43 +1,20 @@
-
 import HomePage from "./pages/home.page";
 import { test as base } from "@playwright/test";
+import SearchPage from "./pages/search.page";
 
 export type PageObjects = {
-  // accountCreatedPage: AccountCreatedPage;
-  // accountDeletedPage: AccountDeletedPage;
   homePage: HomePage;
-  // signUpLoginPage: SignUpLoginPage;
-  // signUpPage: SignUpPage;
-  // productContainer: ProductContainer;
+  searchPage: SearchPage;
 };
-
-// export const test = base.extend<PageObjects>({
-//   accountCreatedPage: async ({ page }, use) => {
-//     const accountCreatedPage = new AccountCreatedPage(page);
-//     await use(accountCreatedPage);
-//   },
-//   accountDeletedPage: async ({ page }, use) => {
-//     const accountDeletedPage = new AccountDeletedPage(page);
-//     await use(accountDeletedPage);
-//   },
-//   homePage: async ({ page }, use) => {
-//     const communicationsPage = new HomePage(page);
-//     await use(communicationsPage);
-//   },
-//   signUpLoginPage: async ({ page }, use) => {
-//     const signUpLoginPage = new SignUpLoginPage(page);
-//     await use(signUpLoginPage);
-//   },
-//   signUpPage: async ({ page }, use) => {
-//     const signUpPage = new SignUpPage(page);
-//     await use(signUpPage);
-//   },
-// });
 
 export const test = base.extend<PageObjects>({
   homePage: async ({ page }, use) => {
     const homePage = new HomePage(page);
     await use(homePage);
+  },
+  searchPage: async ({ page }, use) => {
+    const searchPage = new SearchPage(page);
+    await use(searchPage);
   },
 });
 
