@@ -29,12 +29,12 @@ export default defineConfig({
         ["line"],
         ["html", { open: "never" }],
         ["junit", { outputFile: "junit.xml" }],
-        ['blob', { outputDir: 'blob-report' }],
+        ["blob", { outputDir: "blob-report" }],
         [
           "playwright-tesults-reporter",
           {
-              "tesults-target": process.env.PW_TESULTS_TOKEN,
-              "tesults-build-name": buildName,
+            "tesults-target": process.env.PW_TESULTS_TOKEN,
+            "tesults-build-name": buildName,
           },
         ],
       ]
