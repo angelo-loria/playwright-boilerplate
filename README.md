@@ -34,6 +34,9 @@ This directory contains our base page class, base page component class, and all 
 ## Accessibility Testing
 I'm using the `@axe-core/playwright` for accessibility testing in [axe.spec.ts](https://github.com/angelo-loria/playwright-boilerplate/blob/main/tests/accessibility/axe.spec.ts). These are failing miserably on the test site I'm using so they are currently skipped with the `skip()` annotation.
 
+## Formatting
+I'm using [Prettier](https://prettier.io/) for formatting. I've added an [npm script](https://github.com/angelo-loria/playwright-boilerplate/blob/df775b406560c24a4f272b7b50ff5d97d552b161/package.json#L7) to make excution simpler, although it's currently not tied to any automation. I just make sure to run this before checking in code.
+
 ## Github Actions
 I've made some changes to the default Github Actions workflow that Playwright generates.
 
