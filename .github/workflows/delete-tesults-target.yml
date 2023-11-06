@@ -11,21 +11,19 @@ jobs:
   tesults_target_cleanup:
     name: Cleanup Tesults Target
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: ./playwright
+
     steps:
       - uses: actions/checkout@v3
 
       - name: Setup NodeJS SDK ${{ env.NODEJS_VERSION }}
         uses: actions/setup-node@v3
-        with:
+        with:          
           cache: yarn
           cache-dependency-path: yarn.lock
           node-version: ${{ env.NODEJS_VERSION }}
 
       - name: Yarn Install
-        run: yarn install
+        run: yarn install --mode=skip-build
 
         # used to create/delete branch target
       - name: Set Branch Name Environment Variable
