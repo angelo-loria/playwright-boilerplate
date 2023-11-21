@@ -22,8 +22,8 @@
   },
   "homepage": "https://github.com/angelo-loria/playwright-boilerplate#readme",
   "devDependencies": {
-    "@axe-core/playwright": "^4.7.3",
-    "@playwright/test": "^1.39.0",
+    "@axe-core/playwright": "^4.8.1",
+    "@playwright/test": "^1.40.0",
     "@types/node": "^20.8.7",
     "prettier": "^2.8.8",
     "node-fetch": "2",
