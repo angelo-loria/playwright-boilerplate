@@ -218,6 +218,28 @@ jobs:
           cache-dependency-path: yarn.lock
           node-version: ${{ env.NODEJS_VERSION }}
 
+      # caching playwright browsers, see https://github.com/microsoft/playwright/issues/7249
+      - name: Store Playwright Version 
+        run: |
+          PLAYWRIGHT_VERSION=$(npm ls @playwright/test | grep @playwright | sed 's/.*@//')
+          echo "Playwright Version: $PLAYWRIGHT_VERSION"
+          echo "PLAYWRIGHT_VERSION=$PLAYWRIGHT_VERSION" >> $GITHUB_ENV
+
+      - name: Cache Browsers for Playwright Version
+        id: cache-playwright-browsers
+        uses: actions/cache@v3
+        with:
+          path: ~/.cache/ms-playwright
+          key: playwright-browsers-${{ env.PLAYWRIGHT_VERSION }}
+
+      - name: Install Playwright Browsers
+        if: steps.cache-playwright-browsers.outputs.cache-hit != 'true'
+        run: yarn playwright install --with-deps chromium
+
+      - name: Install Playwright Dependencies
+        if: steps.cache-playwright-browsers.outputs.cache-hit == 'true'
+        run: yarn playwright install-deps
+
       - name: Yarn Install
         run: yarn install
         
