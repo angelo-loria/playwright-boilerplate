@@ -259,7 +259,7 @@ jobs:
         uses: thollander/actions-comment-pull-request@main
         with:
           message: |
-            [Click here to see Tesults Report](https://www.tesults.com/results/rsp/view/results/target/48242328-a7eb-4ab4-8065-3a3686634e5c-1701748288944)
-          comment_tag: playwright_message
+            [Click here to see Tesults Lighthouse Report](https://www.tesults.com/results/rsp/view/results/target/48242328-a7eb-4ab4-8065-3a3686634e5c-1701748288944)
+          comment_tag: lighthouse_message
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
