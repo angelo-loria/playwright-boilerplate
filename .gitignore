@@ -136,3 +136,4 @@ dist
 /blob-report/
 junit.xml
 *.html
+/tests/lighthouse/reports/cases.json

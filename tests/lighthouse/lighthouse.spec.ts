@@ -13,6 +13,7 @@ const pagePaths = {
   termsConditions: "/terms-conditions",
 };
 
+// used by tesults-lighthouse.js to upload results
 type tesultsTestCase = {
   name: string;
   suite: string;
@@ -40,8 +41,8 @@ for (const [pageName, pagePath] of Object.entries(pagePaths)) {
   test(`${pageName} @lighthouse`, async ({ baseURL, browserName }) => {
     const fullUrl = baseURL + pagePath;
     const reportPath = `${__dirname}/reports/${pageName}.html`;
-
     const lighthouse = require("lighthouse/core/index.cjs");
+
     // https://github.com/GoogleChrome/lighthouse/blob/main/core/config/desktop-config.js
     const config = {
       extends: "lighthouse:default",
@@ -69,13 +70,6 @@ for (const [pageName, pagePath] of Object.entries(pagePaths)) {
       {
         output: "html",
         port: port,
-        onlyCategories: [
-          "performance",
-          "accessibility",
-          "best-practices",
-          "seo",
-          "pwa",
-        ],
       },
       config
     );
