@@ -9,7 +9,7 @@
     "test:chromium": "playwright test --project=chromium",
     "test:ci": "CI=true playwright test",
     "test:debug": "playwright test --debug --project=chromium",
-    "test:lighthouse": "CI=true playwright test --config=./tests/lighthouse/playwright.config.ts && node ./tests/lighthouse/tesults.js"
+    "test:lighthouse": "CI=true playwright test --config=./tests/lighthouse/playwright.config.ts && node ./scripts/tesults-lighthouse.js"
   },
   "repository": {
     "type": "git",

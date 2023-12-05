@@ -7,7 +7,7 @@ function postTesultsData() {
     let data = {
         target: `${process.env.LH_TESULTS_API_TOKEN}`,
         results: {
-            cases: JSON.parse(fs.readFileSync(`${__dirname}/reports/cases.json`)),
+            cases: JSON.parse(fs.readFileSync(`${__dirname}./tests/lighthouse/reports/cases.json`)),
         },
     };
 
