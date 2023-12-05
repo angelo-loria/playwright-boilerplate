@@ -1,7 +1,9 @@
 import { defineConfig, devices } from "@playwright/test";
 
 // used for Tesults build name
-const buildName = `${process.env.GITHUB_SHA?.slice(0, 7)}-${process.env.GITHUB_RUN_NUMBER}-${process.env.GITHUB_RUN_ATTEMPT}`;
+const buildName = `${process.env.GITHUB_SHA?.slice(0, 7)}-${
+  process.env.GITHUB_RUN_NUMBER
+}-${process.env.GITHUB_RUN_ATTEMPT}`;
 
 /**
  * Read environment variables from file.
@@ -56,12 +58,13 @@ export default defineConfig({
     {
       name: "chromium",
       use: { ...devices["Desktop Chrome"] },
+      testIgnore: /lighthouse.spec.ts/
     },
 
     {
       name: "firefox",
       use: { ...devices["Desktop Firefox"] },
-      testIgnore: /.*axe.spec.ts/,
+      testIgnore: [/.*axe.spec.ts/, /lighthouse.spec.ts/]
     },
 
     // {

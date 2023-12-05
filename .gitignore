@@ -135,3 +135,5 @@ dist
 /playwright/.cache/
 /blob-report/
 junit.xml
+*.html
+/tests/lighthouse/reports/cases.json
