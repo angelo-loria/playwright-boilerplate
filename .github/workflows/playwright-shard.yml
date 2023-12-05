@@ -203,3 +203,40 @@ jobs:
           [Click here to see Tesults Dashboard](https://www.tesults.com/results/rsp/view/status/project/48242328-a7eb-4ab4-8065-3a3686634e5c/group/playwright-boilerplate)
         comment_tag: playwright_message
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  
+  lighthouse_test:
+    if: ${{ always() }}
+    name: Lighthouse
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      
+      - name: Setup NodeJS SDK ${{ env.NODEJS_VERSION }}
+        uses: actions/setup-node@v3
+        with:
+          cache: yarn
+          cache-dependency-path: yarn.lock
+          node-version: ${{ env.NODEJS_VERSION }}
+
+      - name: Yarn Install
+        run: yarn install
+        
+      - name: Run Lighthouse
+        run: yarn test:lighthouse
+        
+      - name: Upload Lighthouse Report
+        uses: actions/upload-artifact@v3
+        with:
+          name: lighthouse-report
+          path: lighthouse/reports
+          retention-days: 10
+
+      - name: Message PR of Artifact Published
+        if: ${{ always() && github.event_name == 'pull_request' }}
+        uses: thollander/actions-comment-pull-request@main
+        with:
+          message: |
+            [Click here to see Tesults Report](https://www.tesults.com/results/rsp/view/results/target/48242328-a7eb-4ab4-8065-3a3686634e5c-1701748288944)
+          comment_tag: playwright_message
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+

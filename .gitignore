@@ -135,3 +135,4 @@ dist
 /playwright/.cache/
 /blob-report/
 junit.xml
+*.html

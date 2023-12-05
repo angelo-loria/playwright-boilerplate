@@ -8,7 +8,8 @@
     "test": "playwright test",
     "test:chromium": "playwright test --project=chromium",
     "test:ci": "CI=true playwright test",
-    "test:debug": "playwright test --debug --project=chromium"
+    "test:debug": "playwright test --debug --project=chromium",
+    "test:lighthouse": "CI=true playwright test --config=./tests/lighthouse/playwright.config.ts && node ./tests/lighthouse/tesults.js"
   },
   "repository": {
     "type": "git",
@@ -23,10 +24,13 @@
   "homepage": "https://github.com/angelo-loria/playwright-boilerplate#readme",
   "devDependencies": {
     "@axe-core/playwright": "^4.8.1",
-    "@playwright/test": "^1.40.0",
+    "@playwright/test": "^1.40.1",
     "@types/node": "^20.8.7",
     "prettier": "^2.8.8",
     "node-fetch": "2",
-    "playwright-tesults-reporter": "^1.0.1"
+    "playwright-tesults-reporter": "^1.0.1",
+    "lighthouse": "^11.3.0",
+    "find-free-ports": "^3.0.0",
+    "tesults": "^1.1.3"
   }
 }
