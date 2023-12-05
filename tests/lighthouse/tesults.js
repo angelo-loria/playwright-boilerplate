@@ -5,7 +5,7 @@ const fs = require("fs");
 function postTesultsData() {
     console.log("posting results to tesults...");
     let data = {
-        target: `${process.env.PW_TESULTS_TOKEN}`,
+        target: `${process.env.LH_TESULTS_API_TOKEN}`,
         results: {
             cases: JSON.parse(fs.readFileSync(`${__dirname}/reports/cases.json`)),
         },

@@ -250,7 +250,7 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: lighthouse-report
-          path: lighthouse/reports
+          path: tests/lighthouse/reports
           retention-days: 10
 
       - name: Message PR of Artifact Published
