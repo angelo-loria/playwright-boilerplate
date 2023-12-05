@@ -3,14 +3,14 @@ import findFreePorts from "find-free-ports";
 import * as fs from "fs";
 
 const pagePaths = {
-  about: "/about",
-  faq: "/frequently-asked-questions",
-  home: "/",
-  privacyPolicy: "/privacy-policy",
-  productPage: "/product/acme-geometric-circles-t-shirt",
-  search: "/search?q=acme",
-  shippingReturnPolicy: "/shipping-return-policy",
-  termsConditions: "/terms-conditions",
+  about: "about",
+  faq: "frequently-asked-questions",
+  home: "",
+  privacyPolicy: "privacy-policy",
+  productPage: "product/acme-geometric-circles-t-shirt",
+  search: "search?q=acme",
+  shippingReturnPolicy: "shipping-return-policy",
+  termsConditions: "terms-conditions",
 };
 
 // used by tesults-lighthouse.js to upload results
