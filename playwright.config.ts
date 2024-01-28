@@ -58,13 +58,13 @@ export default defineConfig({
     {
       name: "chromium",
       use: { ...devices["Desktop Chrome"] },
-      testIgnore: /lighthouse.spec.ts/
+      testIgnore: /lighthouse.spec.ts/,
     },
 
     {
       name: "firefox",
       use: { ...devices["Desktop Firefox"] },
-      testIgnore: [/.*axe.spec.ts/, /lighthouse.spec.ts/]
+      testIgnore: [/.*axe.spec.ts/, /lighthouse.spec.ts/],
     },
 
     // {
