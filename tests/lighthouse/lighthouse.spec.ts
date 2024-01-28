@@ -1,4 +1,4 @@
-import { BrowserContext, request, test, chromium } from "@playwright/test";
+import { BrowserContext, test, chromium } from "@playwright/test";
 import findFreePorts from "find-free-ports";
 import * as fs from "fs";
 
@@ -38,7 +38,7 @@ test.beforeAll(async () => {
 });
 
 for (const [pageName, pagePath] of Object.entries(pagePaths)) {
-  test(`${pageName} @lighthouse`, async ({ baseURL, browserName }) => {
+  test(`${pageName} @lighthouse`, async ({ baseURL }) => {
     const fullUrl = baseURL + pagePath;
     const reportPath = `${__dirname}/reports/${pageName}.html`;
     const lighthouse = require("lighthouse/core/index.cjs");
