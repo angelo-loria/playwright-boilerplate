@@ -46,11 +46,11 @@ export default defineConfig({
     /* Base URL to use in actions like `await page.goto('/')`. */
     baseURL: "https://demo.vercel.store/",
     /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
-    trace: "retain-on-failure",
+    trace: "on",
     /* Set custom id attribute */
     testIdAttribute: "id",
     /* Retain video on failure */
-    video: "retain-on-failure",
+    video: "on",
   },
 
   /* Configure projects for major browsers */
