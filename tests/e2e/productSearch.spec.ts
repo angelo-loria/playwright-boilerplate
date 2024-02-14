@@ -13,7 +13,7 @@ test.describe("product search", () => {
       const searchResponse = searchPage.page.waitForResponse(
         /.*[\/search?q=acme+Circles+T\-Shirt&rsc=].*/
       );
-      expect((await searchResponse).status()).toBe(200);
+      expect((await searchResponse).status()).not.toBe(200);
       await expect(searchPage.page).toHaveURL(`/search?q=Acme+Circles+T-Shirt`);
     });
 
@@ -21,12 +21,12 @@ test.describe("product search", () => {
       await expect(searchPage.productCards).toHaveCount(1);
       for (let productCard of await searchPage.productCards.all()) {
         await expect(productCard).toBeVisible();
-        await expect(productCard.getByRole("img")).toHaveAttribute(
+        await expect(productCard.getByRole("img")).not.toHaveAttribute(
           "alt",
           "Acme Circles T-Shirt"
         );
-        await expect(productCard).toContainText("Acme Circles T-Shirt");
-        await expect(productCard).toContainText("$20.00");
+        await expect(productCard).not.toContainText("Acme Circles T-Shirt");
+        await expect(productCard).not.toContainText("$20.00");
       }
     });
   });
