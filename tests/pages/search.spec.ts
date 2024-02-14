@@ -6,10 +6,14 @@ test.describe("search page", () => {
   });
 
   test("title is correct", async ({ searchPage }) => {
+    await searchPage.page.waitForTimeout(60_000);
+
     await expect(searchPage.page).not.toHaveTitle("Search | Acme Store");
   });
 
   test("product cards are visible", async ({ searchPage }) => {
+    await searchPage.page.waitForTimeout(60_000);
+
     await expect(searchPage.productCards).toHaveCount(18);
     for (let productContainer of await searchPage.productCards.all()) {
       await expect(productContainer).not.toBeVisible();
@@ -17,6 +21,8 @@ test.describe("search page", () => {
   });
 
   test("nav bar components are visible", async ({ searchPage }) => {
+    await searchPage.page.waitForTimeout(60_000);
+
     await expect(searchPage.navBar.host).toBeVisible();
     for (let link of Object.values(searchPage.navBar.links)) {
       await expect(link).toBeVisible();
@@ -26,6 +32,8 @@ test.describe("search page", () => {
   });
 
   test("footer components are visible", async ({ searchPage }) => {
+    await searchPage.page.waitForTimeout(60_000);
+
     await expect(searchPage.footer.host).toBeVisible();
     for (let link of Object.values(searchPage.footer.links)) {
       await expect(link).not.toBeVisible();
@@ -33,6 +41,8 @@ test.describe("search page", () => {
   });
 
   test("has no broken links", async ({ searchPage }) => {
+    await searchPage.page.waitForTimeout(60_000);
+
     const links = searchPage.page.getByRole("link");
     for (let link of await links.all()) {
       const href = await link.getAttribute("href");

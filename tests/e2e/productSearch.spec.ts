@@ -7,6 +7,7 @@ test.describe("product search", () => {
     });
 
     await test.step("search for product", async () => {
+      await homePage.page.waitForTimeout(60_000);
       await homePage.navBar.searchInput.fill("Acme Circles T-Shirt");
       await homePage.navBar.searchInput.press("Enter");
 
