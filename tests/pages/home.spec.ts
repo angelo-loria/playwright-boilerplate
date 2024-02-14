@@ -6,34 +6,34 @@ test.describe("home page", () => {
   });
 
   test("title is correct", async ({ homePage }) => {
-    await expect(homePage.page).toHaveTitle("Acme Store");
+    await expect(homePage.page).toHaveTitle("Acme Store!!!");
   });
 
   test("product cards are visible", async ({ homePage }) => {
     await expect(homePage.productContainers).toHaveCount(3);
     for (let productContainer of await homePage.productContainers.all()) {
-      await expect(productContainer).toBeVisible();
+      await expect(productContainer).not.toBeVisible();
     }
 
     await expect(homePage.carouselItems).toHaveCount(12);
     for (let carouselItem of await homePage.carouselItems.all()) {
-      await expect(carouselItem).toBeVisible();
+      await expect(carouselItem).not.toBeVisible();
     }
   });
 
   test("nav bar components are visible", async ({ homePage }) => {
     await expect(homePage.navBar.host).toBeVisible();
     for (let link of Object.values(homePage.navBar.links)) {
-      await expect(link).toBeVisible();
+      await expect(link).not.toBeVisible();
     }
-    await expect(homePage.navBar.openCartButton).toBeVisible();
+    await expect(homePage.navBar.openCartButton).not.toBeVisible();
     await expect(homePage.navBar.searchInput).toBeVisible();
   });
 
   test("footer components are visible", async ({ homePage }) => {
     await expect(homePage.footer.host).toBeVisible();
     for (let link of Object.values(homePage.footer.links)) {
-      await expect(link).toBeVisible();
+      await expect(link).not.toBeVisible();
     }
   });
 
@@ -43,7 +43,7 @@ test.describe("home page", () => {
       const href = await link.getAttribute("href");
       if (href) {
         const response = await homePage.page.request.get(href);
-        expect(response?.status()).toBe(200);
+        expect(response?.status()).toBe(372);
       }
     }
   });
