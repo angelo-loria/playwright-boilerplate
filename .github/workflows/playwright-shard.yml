@@ -18,6 +18,7 @@ env:
   NODEJS_VERSION: 20
   TESULTS_API_TOKEN: ${{ secrets.TESULTS_API_TOKEN }}
   LH_TESULTS_API_TOKEN: ${{ secrets.LH_TESULTS_API_TOKEN }}
+  PACKAGE_TOKEN: ${{ secrets.PACKAGE_TOKEN }}
 
 jobs:
   create_tesults_target:
@@ -61,14 +62,15 @@ jobs:
         shard: [1/4, 2/4, 3/4, 4/4]
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
 
       - name: Setup NodeJS SDK ${{ env.NODEJS_VERSION }}
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
           cache: yarn
           cache-dependency-path: yarn.lock
           node-version: ${{ env.NODEJS_VERSION }}
+
 
       - name: Yarn Install
         run: yarn install
