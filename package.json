@@ -23,7 +23,7 @@
   },
   "homepage": "https://github.com/angelo-loria/playwright-boilerplate#readme",
   "devDependencies": {
-    "@angelo-loria/playwright-config-package": "0.1.20",
+    "@angelo-loria/playwright-config-package": "0.1.26",
     "@axe-core/playwright": "^4.8.1",
     "@types/node": "^20.8.7",
     "find-free-ports": "^3.0.0",

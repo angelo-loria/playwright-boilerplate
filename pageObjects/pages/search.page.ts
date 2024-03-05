@@ -1,4 +1,4 @@
-import { BasePage } from "../base.page";
+import { BasePage } from "@angelo-loria/playwright-config-package";
 import ProductCards from "../components/productCards";
 import { escape } from "querystring";
 

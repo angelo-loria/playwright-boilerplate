@@ -1,5 +1,5 @@
 import type { Page } from "@playwright/test";
-import { BasePageComponent } from "../base.pageComponent";
+import { BasePageComponent } from "@angelo-loria/playwright-config-package";
 
 export default class CarouselCards extends BasePageComponent {
   constructor(
