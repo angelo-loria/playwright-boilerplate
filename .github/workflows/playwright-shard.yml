@@ -43,10 +43,12 @@ jobs:
           echo "BRANCH=$BRANCH" >> $GITHUB_ENV
 
       - name: Create .npmrc
-        run: echo "//npm.pkg.github.com/:_authToken=${{ env.PACKAGE_TOKEN }}" >> .npmrc
+        run: echo "@angelo-loria:registry=npm.pkg.github.com/:_authToken=${{ env.PACKAGE_TOKEN }}" >> .npmrc
           
       - name: Yarn Install
         run: yarn install --mode=skip-build
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.PACKAGE_TOKEN }}
         
       - name: Set Tesults Token Output
         run: node ./.scripts/create-delete-branch-target.js create
