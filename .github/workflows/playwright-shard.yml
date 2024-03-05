@@ -19,7 +19,7 @@ env:
   NODEJS_VERSION: 20
   TESULTS_API_TOKEN: ${{ secrets.TESULTS_API_TOKEN }}
   LH_TESULTS_API_TOKEN: ${{ secrets.LH_TESULTS_API_TOKEN }}
-  # NPM_AUTH_TOKEN: ${{ secrets.PACKAGE_TOKEN }}
+  PACKAGE_TOKEN: ${{ secrets.PACKAGE_TOKEN }}
 
 jobs:
   create_tesults_target:
@@ -43,7 +43,7 @@ jobs:
           echo "BRANCH=$BRANCH" >> $GITHUB_ENV
 
       - name: Create .npmrc
-        run: echo "//npm.pkg.github.com/:_authToken=${{ secrets.PACKAGE_TOKEN }}" >> .npmrc
+        run: echo "//npm.pkg.github.com/:_authToken=${{ env.PACKAGE_TOKEN }}" >> .npmrc
           
       - name: Yarn Install
         run: yarn install --mode=skip-build
