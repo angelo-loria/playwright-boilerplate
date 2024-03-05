@@ -34,6 +34,8 @@ jobs:
           cache: yarn
           cache-dependency-path: yarn.lock
           node-version: ${{ env.NODEJS_VERSION }}
+          registry-url: 'https://npm.pkg.github.com'
+          scope: '@angelo-loria'
 
       # used to create/delete branch target
       - name: Set Branch Name Environment Variable
