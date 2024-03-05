@@ -2,10 +2,10 @@
 # yarn lockfile v1
 
 
-"@angelo-loria/playwright-config-package@0.1.13":
-  version "0.1.13"
-  resolved "https://npm.pkg.github.com/download/@angelo-loria/playwright-config-package/0.1.13/32170bbd1b46ed146c49ea75ee82239b68eb3e9a#32170bbd1b46ed146c49ea75ee82239b68eb3e9a"
-  integrity sha512-useA5wyt4g2xBgpXk8lpv7BMQg7MiqoNXLzGNnd1IUQw+5jT9Z2CrXxP4wVW7QEqWvlMuYhkvBlgN3QuMOER1A==
+"@angelo-loria/playwright-config-package@0.1.19":
+  version "0.1.19"
+  resolved "https://npm.pkg.github.com/download/@angelo-loria/playwright-config-package/0.1.19/3a511b31aaee1cf68b36964c22ffff6245fa6304#3a511b31aaee1cf68b36964c22ffff6245fa6304"
+  integrity sha512-fwRtakJGdQl0uEMez1DvIgg8Ikt0NxY31ky02wX8UKgzBdkHBSqpGScKiJ+E//hAY1yrhFACWK+an9/QAzXjnA==
   dependencies:
     "@axe-core/playwright" "^4.8.0"
     "@playwright/test" "1.42.1"
@@ -13,6 +13,7 @@
     axe-html-reporter "^2.2.3"
     dotenv "^16.3.1"
     playwright-tesults-reporter "^1.0.1"
+    typescript "^5.3.3"
 
 "@axe-core/playwright@^4.8.0", "@axe-core/playwright@^4.8.1":
   version "4.8.5"
@@ -71,13 +72,6 @@
   integrity sha512-Gq9rmS54mjBL/7/MvBaNOBwbfnh7beHvS6oS4srqXFcQHpQCV1+c8JXWE8VLPyRDhgS3H8x8A7hztqI9VnwrAQ==
   dependencies:
     playwright "1.42.1"
-
-"@playwright/test@^1.41.2":
-  version "1.41.2"
-  resolved "https://registry.yarnpkg.com/@playwright/test/-/test-1.41.2.tgz#bd9db40177f8fd442e16e14e0389d23751cdfc54"
-  integrity sha512-qQB9h7KbibJzrDpkXkYvsmiDJK14FULCCZgEcoe2AvFAS64oCirWTwzTlAYEbKaRxWs5TFesE1Na6izMv3HfGg==
-  dependencies:
-    playwright "1.41.2"
 
 "@puppeteer/browsers@2.1.0":
   version "2.1.0"
@@ -1044,11 +1038,6 @@ pend@~1.2.0:
   resolved "https://registry.yarnpkg.com/pend/-/pend-1.2.0.tgz#7a57eb550a6783f9115331fcf4663d5c8e007a50"
   integrity sha512-F3asv42UuXchdzt+xXqfW1OGlVBe+mxa2mqI0pg5yAHZPvFmY3Y6drSf/GQ1A86WgWEN9Kzh/WrgKa6iGcHXLg==
 
-playwright-core@1.41.2:
-  version "1.41.2"
-  resolved "https://registry.yarnpkg.com/playwright-core/-/playwright-core-1.41.2.tgz#db22372c708926c697acc261f0ef8406606802d9"
-  integrity sha512-VaTvwCA4Y8kxEe+kfm2+uUUw5Lubf38RxF7FpBxLPmGe5sdNkSg5e3ChEigaGrX7qdqT3pt2m/98LiyvU2x6CA==
-
 playwright-core@1.42.1:
   version "1.42.1"
   resolved "https://registry.yarnpkg.com/playwright-core/-/playwright-core-1.42.1.tgz#13c150b93c940a3280ab1d3fbc945bc855c9459e"
@@ -1060,15 +1049,6 @@ playwright-tesults-reporter@^1.0.1:
   integrity sha512-C84bTQbEG1BfdroUgagaO58LLZajY09npdxQcYQTGNYExgvETL7pZgGK16SLwZ9Kquyqo07gBOEMeM+m7e0gyA==
   dependencies:
     tesults "^1.1.3"
-
-playwright@1.41.2:
-  version "1.41.2"
-  resolved "https://registry.yarnpkg.com/playwright/-/playwright-1.41.2.tgz#4e760b1c79f33d9129a8c65cc27953be6dd35042"
-  integrity sha512-v0bOa6H2GJChDL8pAeLa/LZC4feoAMbSQm1/jF/ySsWWoaNItvrMP7GEkvEEFyCTUYKMxjQKaTSg5up7nR6/8A==
-  dependencies:
-    playwright-core "1.41.2"
-  optionalDependencies:
-    fsevents "2.3.2"
 
 playwright@1.42.1:
   version "1.42.1"
@@ -1351,6 +1331,11 @@ typedarray-to-buffer@^3.1.5:
   integrity sha512-zdu8XMNEDepKKR+XYOXAVPtWui0ly0NtohUscw+UmaHiAWT8hrV1rr//H6V+0DvJ3OQ19S979M0laLfX8rm82Q==
   dependencies:
     is-typedarray "^1.0.0"
+
+typescript@^5.3.3:
+  version "5.3.3"
+  resolved "https://registry.yarnpkg.com/typescript/-/typescript-5.3.3.tgz#b3ce6ba258e72e6305ba66f5c9b452aaee3ffe37"
+  integrity sha512-pXWcraxM0uxAS+tN0AG/BF2TyqmHO014Z070UsJ+pFvYuRSq8KH8DmWpnbXe0pEPDHXZV3FcAbJkijJ5oNEnWw==
 
 unbzip2-stream@1.4.3:
   version "1.4.3"
