@@ -95,14 +95,14 @@ jobs:
         if: steps.cache-playwright-browsers.outputs.cache-hit == 'true'
         run: yarn playwright install-deps
 
-      - name: Download Tesults Token Artifact
-        uses: actions/download-artifact@v3
-        with:
-          name: tesultsToken
+      # - name: Download Tesults Token Artifact
+      #   uses: actions/download-artifact@v3
+      #   with:
+      #     name: tesultsToken
       
-      - name: Set Tesults Target
-        run: | 
-          echo "PW_TESULTS_TOKEN=$(cat tesultsToken.txt)" >> $GITHUB_ENV
+      # - name: Set Tesults Target
+      #   run: | 
+      #     echo "PW_TESULTS_TOKEN=$(cat tesultsToken.txt)" >> $GITHUB_ENV
 
       - name: Run Tests
         run: yarn test:ci --shard ${{ matrix.shard }}
@@ -125,75 +125,75 @@ jobs:
           retention-days: 10
           if-no-files-found: warn
           
-  reporting:
-    if: ${{ always() }}
-    needs: playwright_test
-    name: Reporting
-    runs-on: ubuntu-latest
+  # reporting:
+  #   if: ${{ always() }}
+  #   needs: playwright_test
+  #   name: Reporting
+  #   runs-on: ubuntu-latest
     
-    steps:
-    - uses: actions/checkout@v3
+  #   steps:
+  #   - uses: actions/checkout@v3
     
-    - name: Setup NodeJS SDK ${{ env.NODEJS_VERSION }}
-      uses: actions/setup-node@v3
-      with:
-        cache: yarn
-        cache-dependency-path: yarn.lock
-        node-version: ${{ env.NODEJS_VERSION }}
+  #   - name: Setup NodeJS SDK ${{ env.NODEJS_VERSION }}
+  #     uses: actions/setup-node@v3
+  #     with:
+  #       cache: yarn
+  #       cache-dependency-path: yarn.lock
+  #       node-version: ${{ env.NODEJS_VERSION }}
     
-    - name: Yarn Install
-      run: yarn install
+  #   - name: Yarn Install
+  #     run: yarn install
     
-    - name: Download blob reports from GitHub Actions Artifacts
-      uses: actions/download-artifact@v3
-      with:
-        name: all-blob-reports
-        path: all-blob-reports
+  #   - name: Download blob reports from GitHub Actions Artifacts
+  #     uses: actions/download-artifact@v3
+  #     with:
+  #       name: all-blob-reports
+  #       path: all-blob-reports
     
-    # test-results directory is only created when a test fails, if all pass there is no dir to download
-    - name: Check for test-results Artifact
-      uses: xSAVIKx/artifact-exists-action@v0
-      id: check-artifact
-      with:
-        name: test-results
+  #   # test-results directory is only created when a test fails, if all pass there is no dir to download
+  #   - name: Check for test-results Artifact
+  #     uses: xSAVIKx/artifact-exists-action@v0
+  #     id: check-artifact
+  #     with:
+  #       name: test-results
 
-    # TODO - watch for upcoming ignore feature on this so that the above step can be removed
-    - name: Download test-results from GitHub Actions Artifacts
-      uses: actions/download-artifact@v3
-      if: ${{ steps.check-artifact.outputs.exists == 'true' }}
-      with:
-        name: test-results
-        path: test-results
+  #   # TODO - watch for upcoming ignore feature on this so that the above step can be removed
+  #   - name: Download test-results from GitHub Actions Artifacts
+  #     uses: actions/download-artifact@v3
+  #     if: ${{ steps.check-artifact.outputs.exists == 'true' }}
+  #     with:
+  #       name: test-results
+  #       path: test-results
       
-    # xml report use by dorny-test-reporter
-    - name: Merge into XML Report
-      run: PLAYWRIGHT_JUNIT_OUTPUT_NAME=junit.xml npx playwright merge-reports --reporter=junit ./all-blob-reports
+  #   # xml report use by dorny-test-reporter
+  #   - name: Merge into XML Report
+  #     run: PLAYWRIGHT_JUNIT_OUTPUT_NAME=junit.xml npx playwright merge-reports --reporter=junit ./all-blob-reports
         
-    - name: Test Report
-      uses: dorny/test-reporter@v1
-      if: success() || failure()
-      with:
-        name: Playwright Test Report
-        path: "**/junit.xml"
-        reporter: java-junit
-        fail-on-error: 'false'
+  #   - name: Test Report
+  #     uses: dorny/test-reporter@v1
+  #     if: success() || failure()
+  #     with:
+  #       name: Playwright Test Report
+  #       path: "**/junit.xml"
+  #       reporter: java-junit
+  #       fail-on-error: 'false'
 
-    - name: Merge into HTML Report
-      run: npx playwright merge-reports --reporter html ./all-blob-reports 
+  #   - name: Merge into HTML Report
+  #     run: npx playwright merge-reports --reporter html ./all-blob-reports 
         
-    - name: Setup Pages
-      uses: actions/configure-pages@v3
+  #   - name: Setup Pages
+  #     uses: actions/configure-pages@v3
 
-    - name: Upload HTML report for Pages
-      uses: actions/upload-pages-artifact@v2
-      with:
-        name: github-pages
-        path: playwright-report
-        retention-days: 14
+  #   - name: Upload HTML report for Pages
+  #     uses: actions/upload-pages-artifact@v2
+  #     with:
+  #       name: github-pages
+  #       path: playwright-report
+  #       retention-days: 14
 
-    - name: Deploy to GitHub Pages
-      id: deployment
-      uses: actions/deploy-pages@v2
+  #   - name: Deploy to GitHub Pages
+  #     id: deployment
+  #     uses: actions/deploy-pages@v2
 
   #   - name: Message PR of Artifact Published
   #     if: ${{ always() && github.event_name == 'pull_request' }}
