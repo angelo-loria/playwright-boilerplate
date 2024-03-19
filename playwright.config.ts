@@ -1,6 +1,8 @@
 import { defineConfig, devices } from "@playwright/test";
 
-// used for Tesults build name
+// buildName is used for Tesults build name
+// the environment variables come from Github Actions
+// https://docs.github.com/en/actions/learn-github-actions/variables#default-environment-variables
 const buildName = `${process.env.GITHUB_SHA?.slice(0, 7)}-${
   process.env.GITHUB_RUN_NUMBER
 }-${process.env.GITHUB_RUN_ATTEMPT}`;
