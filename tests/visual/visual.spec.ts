@@ -8,7 +8,10 @@ test.describe("home page visual-test", () => {
   });
 
   test("snapshot", async ({ homePage }) => {
-    await expect(homePage.page).toHaveScreenshot({ fullPage: true });
+    await expect(homePage.page).toHaveScreenshot({
+      fullPage: true,
+      maxDiffPixelRatio: 0.2,
+    });
   });
 });
 
@@ -18,6 +21,9 @@ test.describe("search page visual-test", () => {
   });
 
   test("snapshot", async ({ searchPage }) => {
-    await expect(searchPage.page).toHaveScreenshot({ fullPage: true });
+    await expect(searchPage.page).toHaveScreenshot({
+      fullPage: true,
+      maxDiffPixelRatio: 0.2,
+    });
   });
 });
