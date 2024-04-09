@@ -62,8 +62,6 @@ jobs:
     runs-on: ubuntu-latest
     container:
       image: mcr.microsoft.com/playwright:v1.43.0-jammy
-    env:
-      HOME: /root # required for playwright to run in container
     steps:
       - uses: actions/checkout@v3
 
@@ -88,6 +86,8 @@ jobs:
 
       - name: Run Tests
         run: yarn test:ci --shard ${{ matrix.shard }}
+        env:
+          HOME: /root # required for playwright to run in container
 
       - name: Upload blob report to GitHub Actions Artifacts
         if: always()
@@ -193,8 +193,6 @@ jobs:
     runs-on: ubuntu-latest
     container:
       image: mcr.microsoft.com/playwright:v1.43.0-jammy
-    env:
-      HOME: /root # required for playwright to run in container
     steps:
       - uses: actions/checkout@v3
       
@@ -210,6 +208,8 @@ jobs:
         
       - name: Run Lighthouse
         run: yarn test:lighthouse
+        env:
+          HOME: /root # required for playwright to run in container
         
       - name: Upload Lighthouse Report
         uses: actions/upload-artifact@v3
