@@ -60,6 +60,8 @@ jobs:
       matrix:
         shard: [1/4, 2/4, 3/4, 4/4]
     runs-on: ubuntu-latest
+    container:
+      image: mcr.microsoft.com/playwright:v1.43.0-jammy
     steps:
       - uses: actions/checkout@v3
 
@@ -72,28 +74,6 @@ jobs:
 
       - name: Yarn Install
         run: yarn install
-        
-      # caching playwright browsers, see https://github.com/microsoft/playwright/issues/7249
-      - name: Store Playwright Version 
-        run: |
-          PLAYWRIGHT_VERSION=$(npm ls @playwright/test | grep @playwright | sed 's/.*@//')
-          echo "Playwright Version: $PLAYWRIGHT_VERSION"
-          echo "PLAYWRIGHT_VERSION=$PLAYWRIGHT_VERSION" >> $GITHUB_ENV
-
-      - name: Cache Browsers for Playwright Version
-        id: cache-playwright-browsers
-        uses: actions/cache@v3
-        with:
-          path: ~/.cache/ms-playwright
-          key: playwright-browsers-${{ env.PLAYWRIGHT_VERSION }}
-
-      - name: Install Playwright Browsers
-        if: steps.cache-playwright-browsers.outputs.cache-hit != 'true'
-        run: yarn playwright install --with-deps
-
-      - name: Install Playwright Dependencies
-        if: steps.cache-playwright-browsers.outputs.cache-hit == 'true'
-        run: yarn playwright install-deps
 
       - name: Download Tesults Token Artifact
         uses: actions/download-artifact@v3
@@ -106,6 +86,8 @@ jobs:
 
       - name: Run Tests
         run: yarn test:ci --shard ${{ matrix.shard }}
+        env:
+          HOME: /root # required for playwright to run in container
 
       - name: Upload blob report to GitHub Actions Artifacts
         if: always()
@@ -209,6 +191,8 @@ jobs:
     if: ${{ always() }}
     name: Lighthouse
     runs-on: ubuntu-latest
+    container:
+      image: mcr.microsoft.com/playwright:v1.43.0-jammy
     steps:
       - uses: actions/checkout@v3
       
@@ -221,31 +205,11 @@ jobs:
 
       - name: Yarn Install
         run: yarn install
-
-      # caching playwright browsers, see https://github.com/microsoft/playwright/issues/7249
-      - name: Store Playwright Version 
-        run: |
-          PLAYWRIGHT_VERSION=$(npm ls @playwright/test | grep @playwright | sed 's/.*@//')
-          echo "Playwright Version: $PLAYWRIGHT_VERSION"
-          echo "PLAYWRIGHT_VERSION=$PLAYWRIGHT_VERSION" >> $GITHUB_ENV
-
-      - name: Cache Browsers for Playwright Version
-        id: cache-playwright-browsers
-        uses: actions/cache@v3
-        with:
-          path: ~/.cache/ms-playwright
-          key: playwright-browsers-${{ env.PLAYWRIGHT_VERSION }}
-
-      - name: Install Playwright Browsers
-        if: steps.cache-playwright-browsers.outputs.cache-hit != 'true'
-        run: yarn playwright install --with-deps chromium
-
-      - name: Install Playwright Dependencies
-        if: steps.cache-playwright-browsers.outputs.cache-hit == 'true'
-        run: yarn playwright install-deps
         
       - name: Run Lighthouse
         run: yarn test:lighthouse
+        env:
+          HOME: /root # required for playwright to run in container
         
       - name: Upload Lighthouse Report
         uses: actions/upload-artifact@v3
