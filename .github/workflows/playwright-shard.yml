@@ -87,7 +87,8 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        shard: [1/4, 2/4, 3/4, 4/4]
+        shardIndex: [1, 2, 3, 4]
+        shardTotal: [4]
     runs-on: ubuntu-latest
     container:
       image: mcr.microsoft.com/playwright:v${{ needs.set_job_params.outputs.pw-version }}-jammy
@@ -114,7 +115,7 @@ jobs:
           echo "PW_TESULTS_TOKEN=$(cat tesultsToken.txt)" >> $GITHUB_ENV
 
       - name: Run Tests
-        run: yarn test:ci --shard ${{ matrix.shard }}
+        run: yarn test:ci --shard=${{ matrix.shardIndex }}/${{ matrix.shardTotal }}
         env:
           HOME: /root # required for playwright to run in container
 
@@ -122,7 +123,7 @@ jobs:
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: all-blob-reports-${{ matrix.shard }}
+          name: all-blob-reports-${{ matrix.shardIndex }}
           path: blob-report/
           retention-days: 10
         
@@ -131,7 +132,7 @@ jobs:
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: test-results-${{ matrix.shard }}
+          name: test-results-${{ matrix.shardIndex }}
           path: test-results/
           retention-days: 10
           if-no-files-found: warn
