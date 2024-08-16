@@ -25,7 +25,7 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       pw-version: ${{ steps.set_version.outputs.PW_VERSION }}
-      pw-tesults-target-token: ${{ steps.generate-secret.outputs.handle}}
+      pw-tesults-target-token: ${{ steps.generate-secret.outputs.secret-token }}
     steps:
       - uses: actions/checkout@v4
     
@@ -63,8 +63,7 @@ jobs:
         run: |
           PW_TESULTS_TARGET_TOKEN=$(cat tesultsToken.txt)
           echo "::add-mask::$PW_TESULTS_TARGET_TOKEN"
-          SECRET_HANDLE=$(secret-store store-secret "$PW_TESULTS_TARGET_TOKEN")
-          echo "handle=$SECRET_HANDLE" >> "$GITHUB_OUTPUT"
+          echo "secret-token=$PW_TESULTS_TARGET_TOKEN" >> "$GITHUB_OUTPUT"
 
 
       # - name: Set Tesults Target Token Environment Variable
@@ -116,18 +115,21 @@ jobs:
       # - name: Set Tesults Target
       #   run: echo "PW_TESULTS_TOKEN=$(cat tesultsToken.txt)" >> $GITHUB_ENV
 
-      # - name: Set Tesults Target Environment Variable
-      #   run: echo "PW_TESULTS_TOKEN=${{ needs.set_job_params.outputs.tesults-token }}" >> $GITHUB_ENV
+      - name: Set Tesults Target Environment Variable
+        run: echo "PW_TESULTS_TARGET_TOKEN=${{ needs.set_job_params.outputs.pw-tesults-target-token }}" >> $GITHUB_ENV
 
+      - run: echo "${{ env.PW_TESULTS_TARGET_TOKEN }}"
 
       - name: Get Tesults Target Token Secret
         shell: bash
         run: |
-          SECRET_HANDLE="${{ needs.set_job_params.outputs.pw-tesults-target-token }}"
-          RETRIEVED_SECRET=$(secret-store retrieve-secret "$SECRET_HANDLE")
-          echo "::add-mask::$RETRIEVED_SECRET"
-          echo "We retrieved our masked secret: $RETRIEVED_SECRET"
-          echo "PW_TESULTS_TARGET_TOKEN=$RETRIEVED_SECRET" >> $GITHUB_ENV
+          PW_TESULTS_SECRET_TOKEN="${{ needs.set_job_params.outputs.pw-tesults-target-token }}"
+          echo "::add-mask::$PW_TESULTS_SECRET_TOKEN"
+          echo "We retrieved our masked secret: $PW_TESULTS_SECRET_TOKEN"
+          echo "PW_TESULTS_TARGET_TOKEN=$PW_TESULTS_SECRET_TOKEN" >> $GITHUB_ENV
+
+      - run: echo "${{ env.PW_TESULTS_TARGET_TOKEN }}"
+
 
       - name: Run Tests
         run: yarn test:ci --shard=${{ matrix.shardIndex }}/${{ matrix.shardTotal }}
