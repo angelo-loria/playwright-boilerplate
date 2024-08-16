@@ -56,30 +56,21 @@ jobs:
 
       - name: Get Playwright Package Version
         id: get-version
-        uses: beaconbrigade/package-json-version@v0.3
+        uses: beaconbrigade/package-json-version@v0.3.1
         with:
           path: node_modules/playwright
 
-      - name: Write Version to File
-        run: echo "${{ steps.get-version.outputs.version }}" > playwrightPackageVersion.txt
-
-      # - name: Upload Playwright Package Version
-      #   uses: actions/upload-artifact@v4
-      #   with:
-      #     name: playwrightPackageVersion
-      #     path: playwrightPackageVersion.txt
-      #     retention-days: 10
-
-      #     - name: Download Playwright Package Version
-      #     uses: actions/download-artifact@v4
-      #     with:
-      #       name: playwrightPackageVersion
-      #       path: ${{ env.WORKING_DIRECTORY }}
+      # - name: Write Version to File
+      #   run: echo "${{ steps.get-version.outputs.version }}" > playwrightPackageVersion.txt
       
+      # - name: Set Package Version
+      #   id: set_version
+      #   run: | 
+      #     echo "PW_VERSION=$(cat playwrightPackageVersion.txt)" >> $GITHUB_OUTPUT
+
       - name: Set Package Version
         id: set_version
-        run: | 
-          echo "PW_VERSION=$(cat playwrightPackageVersion.txt)" >> $GITHUB_OUTPUT
+        run: echo "${{ steps.get-version.outputs.version }}" >> $GITHUB_OUTPUT
 
   playwright_test:
     name: Playwright Test
@@ -162,21 +153,6 @@ jobs:
         pattern: all-blob-reports-*
         merge-multiple: true
         path: all-blob-reports
-    
-    # test-results directory is only created when a test fails, if all pass there is no dir to download
-    # - name: Check for test-results Artifact
-    #   uses: xSAVIKx/artifact-exists-action@v0
-    #   id: check-artifact
-    #   with:
-    #     name: test-results
-
-    # # TODO - watch for upcoming ignore feature on this so that the above step can be removed
-    # - name: Download test-results from GitHub Actions Artifacts
-    #   uses: actions/download-artifact@v3
-    #   if: ${{ steps.check-artifact.outputs.exists == 'true' }}
-    #   with:
-    #     name: test-results
-    #     path: test-results
       
     # xml report use by dorny-test-reporter
     - name: Merge into XML Report
