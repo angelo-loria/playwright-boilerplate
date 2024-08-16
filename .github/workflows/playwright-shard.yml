@@ -25,7 +25,7 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       pw-version: ${{ steps.set_version.outputs.PW_VERSION }}
-      tesults-token: ${{ steps.set_tesults_token.outputs.TESULTS_TOKEN }}
+      pw-tesults-target-token: ${{ steps.set_tesults_token.outputs.PW_TESULTS_TARGET_TOKEN }}
     steps:
       - uses: actions/checkout@v4
     
@@ -46,7 +46,7 @@ jobs:
       - name: Yarn Install
         run: yarn install --mode=skip-build
         
-      - name: Create Tesults Token
+      - name: Create Tesults Target Token
         run: node ./.scripts/create-delete-branch-target.js create
 
         # - name: Upload Tesults Token
@@ -55,12 +55,12 @@ jobs:
         #   name: tesultsToken
         #   path: tesultsToken.txt
        # echo "PW_TESULTS_TOKEN=$(cat tesultsToken.txt)" >> $GITHUB_ENV
-      - name: Set Tesults Token Environment Variable
-        run: echo "TESULTS_TOKEN=$(cat tesultsToken.txt)" >> $GITHUB_ENV
+      - name: Set Tesults Target Token Environment Variable
+        run: echo "PW_TESULTS_TARGET_TOKEN=$(cat tesultsToken.txt)" >> $GITHUB_ENV
 
       - name: Set Tesults Token Github Output
         id: set_tesults_token
-        run: echo "TESULTS_TOKEN=${{ env.TESULTS_TOKEN }}" >> $GITHUB_OUTPUT
+        run: echo "PW_TESULTS_TARGET_TOKEN=${{ env.PW_TESULTS_TARGET_TOKEN }}" >> $GITHUB_OUTPUT
 
       - name: Dump job context
         env:
@@ -96,16 +96,14 @@ jobs:
         shardTotal: [4]
     runs-on: ubuntu-latest
     env:
-      PW_TESULTS_TOKEN: ${{ needs.set_job_params.outputs.tesults-token }}
+      PW_TESULTS_TOKEN: ${{ needs.set_job_params.outputs.pw-tesults-target-token }}
     container:
       image: mcr.microsoft.com/playwright:v${{ needs.set_job_params.outputs.pw-version }}-jammy
     steps:
 
+      - run: echo ${{needs.set_job_params.outputs.pw-tesults-target-token}}
 
-      - name: Dump GitHub context
-        env:
-          GITHUB_CONTEXT: ${{ toJson(github) }}
-        run: echo "$GITHUB_CONTEXT"
+
       - name: Dump job context
         env:
           JOB_CONTEXT: ${{ toJson(job) }}
@@ -114,18 +112,6 @@ jobs:
         env:
           STEPS_CONTEXT: ${{ toJson(steps) }}
         run: echo "$STEPS_CONTEXT"
-      - name: Dump runner context
-        env:
-          RUNNER_CONTEXT: ${{ toJson(runner) }}
-        run: echo "$RUNNER_CONTEXT"
-      - name: Dump strategy context
-        env:
-          STRATEGY_CONTEXT: ${{ toJson(strategy) }}
-        run: echo "$STRATEGY_CONTEXT"
-      - name: Dump matrix context
-        env:
-          MATRIX_CONTEXT: ${{ toJson(matrix) }}
-        run: echo "$MATRIX_CONTEXT"
 
 
 
