@@ -50,7 +50,7 @@ jobs:
         HOME: /root # required for playwright to run in container
 
     - name: Commit and Push Snapshots
-      uses: stefanzweifel/git-auto-commit-action@v5
+      uses: stefanzweifel/git-auto-commit-action@v5.0.1
       with:
         commit_message: Update Playwright Snapshots
         file_pattern: "tests/visual/*.png"
