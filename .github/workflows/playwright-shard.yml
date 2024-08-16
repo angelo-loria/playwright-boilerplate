@@ -70,7 +70,8 @@ jobs:
 
       - name: Set Package Version
         id: set_version
-        run: echo ${{ steps.get-version.outputs.version }} >> $GITHUB_OUTPUT
+        run: | 
+          echo ${{ steps.get-version.outputs.version }} >> $GITHUB_OUTPUT
 
   playwright_test:
     name: Playwright Test
