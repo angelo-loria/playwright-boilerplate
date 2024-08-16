@@ -61,7 +61,7 @@ jobs:
         shard: [1/4, 2/4, 3/4, 4/4]
     runs-on: ubuntu-latest
     container:
-      image: mcr.microsoft.com/playwright:v1.43.0-jammy
+      image: mcr.microsoft.com/playwright:v1.46.0-jammy
     steps:
       - uses: actions/checkout@v3
 
