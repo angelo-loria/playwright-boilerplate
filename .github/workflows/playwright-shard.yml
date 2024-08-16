@@ -25,6 +25,7 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       pw-version: ${{ steps.set_version.outputs.PW_VERSION }}
+      tesults-token: ${{ steps.set_tesults_token.outputs.TESULTS_TOKEN }}
     steps:
       - uses: actions/checkout@v4
       
@@ -45,14 +46,18 @@ jobs:
       - name: Yarn Install
         run: yarn install --mode=skip-build
         
-      - name: Set Tesults Token Output
+      - name: Create Tesults Token
         run: node ./.scripts/create-delete-branch-target.js create
+
+      - name: Set Tesults Token Output
+        id: set_tesults_token
+        run: echo "TESULTS_TOKEN=$(cat tesultsToken.txt)" >> $GITHUB_ENV
         
-      - name: Upload Tesults Token
-        uses: actions/upload-artifact@v4
-        with:
-          name: tesultsToken
-          path: tesultsToken.txt
+      # - name: Upload Tesults Token
+      #   uses: actions/upload-artifact@v4
+      #   with:
+      #     name: tesultsToken
+      #     path: tesultsToken.txt
 
       - name: Get Playwright Package Version
         id: get-version
@@ -60,18 +65,9 @@ jobs:
         with:
           path: node_modules/playwright
 
-      # - name: Write Version to File
-      #   run: echo "${{ steps.get-version.outputs.version }}" > playwrightPackageVersion.txt
-      
-      # - name: Set Package Version
-      #   id: set_version
-      #   run: | 
-      #     echo "PW_VERSION=$(cat playwrightPackageVersion.txt)" >> $GITHUB_OUTPUT
-
       - name: Set Package Version
         id: set_version
-        run: | 
-          echo "PW_VERSION=${{ steps.get-version.outputs.version }}" >> $GITHUB_OUTPUT
+        run: echo "PW_VERSION=${{ steps.get-version.outputs.version }}" >> $GITHUB_OUTPUT
 
   playwright_test:
     name: Playwright Test
@@ -97,14 +93,16 @@ jobs:
       - name: Yarn Install
         run: yarn install
 
-      - name: Download Tesults Token Artifact
-        uses: actions/download-artifact@v4
-        with:
-          name: tesultsToken
+      # - name: Download Tesults Token Artifact
+      #   uses: actions/download-artifact@v4
+      #   with:
+      #     name: tesultsToken
       
+      # - name: Set Tesults Target
+      #   run: echo "PW_TESULTS_TOKEN=$(cat tesultsToken.txt)" >> $GITHUB_ENV
+
       - name: Set Tesults Target
-        run: | 
-          echo "PW_TESULTS_TOKEN=$(cat tesultsToken.txt)" >> $GITHUB_ENV
+        run: echo "PW_TESULTS_TOKEN=${{ needs.set_job_params.outputs.tesults-token }}" >> $GITHUB_ENV
 
       - name: Run Tests
         run: yarn test:ci --shard=${{ matrix.shardIndex }}/${{ matrix.shardTotal }}
