@@ -25,7 +25,7 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       pw-version: ${{ steps.set_version.outputs.PW_VERSION }}
-      pw-tesults-target-token: ${{ steps.set_tesults_token.outputs.PW_TESULTS_TARGET_TOKEN }}
+      pw-tesults-target-token: ${{ steps.generate-secret.outputs.handle}}
     steps:
       - uses: actions/checkout@v4
     
@@ -55,26 +55,25 @@ jobs:
         #   name: tesultsToken
         #   path: tesultsToken.txt
        # echo "PW_TESULTS_TOKEN=$(cat tesultsToken.txt)" >> $GITHUB_ENV
-      - name: Set Tesults Target Token Environment Variable
-        run: echo "PW_TESULTS_TARGET_TOKEN=$(cat tesultsToken.txt)" >> $GITHUB_ENV
 
-      - name: Set Tesults Token Github Output
-        id: set_tesults_token
-        run: echo "PW_TESULTS_TARGET_TOKEN=${{ env.PW_TESULTS_TARGET_TOKEN }}" >> $GITHUB_OUTPUT
 
-      - name: Dump job context
-        env:
-          JOB_CONTEXT: ${{ toJson(job) }}
-        run: echo "$JOB_CONTEXT"
-      - name: Dump steps context
-        env:
-          STEPS_CONTEXT: ${{ toJson(steps) }}
-        run: echo "$STEPS_CONTEXT"
-      # - name: Upload Tesults Token
-      #   uses: actions/upload-artifact@v4
-      #   with:
-      #     name: tesultsToken
-      #     path: tesultsToken.txt
+      - name: Set Tesults Target Token Masked Output
+        id: generate-secret
+        shell: bash
+        run: |
+          PW_TESULTS_TARGET_TOKEN=$(cat tesultsToken.txt)
+          echo "::add-mask::$PW_TESULTS_TARGET_TOKEN"
+          SECRET_HANDLE=$(secret-store store-secret "$PW_TESULTS_TARGET_TOKEN")
+          echo "handle=$SECRET_HANDLE" >> "$GITHUB_OUTPUT"
+
+
+      # - name: Set Tesults Target Token Environment Variable
+      #   run: echo "PW_TESULTS_TARGET_TOKEN=$(cat tesultsToken.txt)" >> $GITHUB_ENV
+
+      # - name: Set Tesults Token Github Output
+      #   id: set_tesults_token
+      #   run: echo "PW_TESULTS_TARGET_TOKEN=${{ env.PW_TESULTS_TARGET_TOKEN }}" >> $GITHUB_OUTPUT
+
 
       - name: Get Playwright Package Version
         id: get-version
@@ -95,23 +94,11 @@ jobs:
         shardIndex: [1, 2, 3, 4]
         shardTotal: [4]
     runs-on: ubuntu-latest
-    env:
-      PW_TESULTS_TOKEN: ${{ needs.set_job_params.outputs.pw-tesults-target-token }}
     container:
       image: mcr.microsoft.com/playwright:v${{ needs.set_job_params.outputs.pw-version }}-jammy
     steps:
 
-      - run: echo ${{needs.set_job_params.outputs.pw-tesults-target-token}}
 
-
-      - name: Dump job context
-        env:
-          JOB_CONTEXT: ${{ toJson(job) }}
-        run: echo "$JOB_CONTEXT"
-      - name: Dump steps context
-        env:
-          STEPS_CONTEXT: ${{ toJson(steps) }}
-        run: echo "$STEPS_CONTEXT"
 
 
 
@@ -131,6 +118,16 @@ jobs:
 
       # - name: Set Tesults Target Environment Variable
       #   run: echo "PW_TESULTS_TOKEN=${{ needs.set_job_params.outputs.tesults-token }}" >> $GITHUB_ENV
+
+
+      - name: Get Tesults Target Token Secret
+        shell: bash
+        run: |
+          SECRET_HANDLE="${{ needs.set_job_params.outputs.pw-tesults-target-token }}"
+          RETRIEVED_SECRET=$(secret-store retrieve-secret "$SECRET_HANDLE")
+          echo "::add-mask::$RETRIEVED_SECRET"
+          echo "We retrieved our masked secret: $RETRIEVED_SECRET"
+          echo "PW_TESULTS_TARGET_TOKEN=$RETRIEVED_SECRET" >> $GITHUB_ENV
 
       - name: Run Tests
         run: yarn test:ci --shard=${{ matrix.shardIndex }}/${{ matrix.shardTotal }}
