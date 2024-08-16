@@ -49,6 +49,9 @@ jobs:
       env:
         HOME: /root # required for playwright to run in container
 
+    # turn off unsafe repository directory warning
+    - run: git config --global --add safe.directory '*'
+
     - name: Commit and Push Snapshots
       uses: stefanzweifel/git-auto-commit-action@v5.0.1
       with:
