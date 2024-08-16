@@ -29,7 +29,7 @@
     "prettier": "^3.0.0",
     "node-fetch": "2",
     "playwright-tesults-reporter": "^1.1.0",
-    "lighthouse": "^12.0.0",
+    "lighthouse": "^11.3.0",
     "find-free-ports": "^3.0.0",
     "tesults": "^1.1.3"
   }
