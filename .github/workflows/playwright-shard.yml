@@ -51,7 +51,7 @@ jobs:
 
       - name: Set Tesults Token Output
         id: set_tesults_token
-        run: echo "TESULTS_TOKEN=$(cat tesultsToken.txt)" >> $GITHUB_ENV
+        run: echo "TESULTS_TOKEN=$(cat tesultsToken.txt)" >> $GITHUB_OUTPUT
         
       # - name: Upload Tesults Token
       #   uses: actions/upload-artifact@v4
