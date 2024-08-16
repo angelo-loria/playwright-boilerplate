@@ -28,6 +28,13 @@ jobs:
       tesults-token: ${{ steps.set_tesults_token.outputs.TESULTS_TOKEN }}
     steps:
       - uses: actions/checkout@v4
+    
+      - name: Setup NodeJS SDK ${{ env.NODEJS_VERSION }}
+        uses: actions/setup-node@v4
+        with:
+          cache: yarn
+          cache-dependency-path: yarn.lock
+          node-version: ${{ env.NODEJS_VERSION }}
 
       # used to create/delete branch target
       - name: Set Branch Name Environment Variable
@@ -76,13 +83,6 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Setup NodeJS SDK ${{ env.NODEJS_VERSION }}
-        uses: actions/setup-node@v4
-        with:
-          cache: yarn
-          cache-dependency-path: yarn.lock
-          node-version: ${{ env.NODEJS_VERSION }}
-
       - name: Yarn Install
         run: yarn install
 
@@ -94,7 +94,7 @@ jobs:
       # - name: Set Tesults Target
       #   run: echo "PW_TESULTS_TOKEN=$(cat tesultsToken.txt)" >> $GITHUB_ENV
 
-      - name: Set Tesults Target
+      - name: Set Tesults Target Environment Variable
         run: echo "PW_TESULTS_TOKEN=${{ needs.set_job_params.outputs.tesults-token }}" >> $GITHUB_ENV
 
       - name: Run Tests
@@ -195,7 +195,7 @@ jobs:
       image: mcr.microsoft.com/playwright:v${{ needs.set_job_params.outputs.pw-version }}-jammy
     steps:
       - uses: actions/checkout@v4
-
+      
       - name: Yarn Install
         run: yarn install
         
