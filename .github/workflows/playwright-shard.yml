@@ -49,11 +49,27 @@ jobs:
       - name: Create Tesults Token
         run: node ./.scripts/create-delete-branch-target.js create
 
+        # - name: Upload Tesults Token
+        # uses: actions/upload-artifact@v4
+        # with:
+        #   name: tesultsToken
+        #   path: tesultsToken.txt
        # echo "PW_TESULTS_TOKEN=$(cat tesultsToken.txt)" >> $GITHUB_ENV
-      - name: Set Tesults Token Output
+      - name: Set Tesults Token Environment Variable
+        run: echo "TESULTS_TOKEN=$(cat tesultsToken.txt)" >> $GITHUB_ENV
+
+      - name: Set Tesults Token Github Output
         id: set_tesults_token
-        run: echo "TESULTS_TOKEN=$(cat tesultsToken.txt)" >> $GITHUB_OUTPUT
-        
+        run: echo "TESULTS_TOKEN=${{ env.TESULTS_TOKEN }}" >> $GITHUB_OUTPUT
+
+      - name: Dump job context
+        env:
+          JOB_CONTEXT: ${{ toJson(job) }}
+        run: echo "$JOB_CONTEXT"
+      - name: Dump steps context
+        env:
+          STEPS_CONTEXT: ${{ toJson(steps) }}
+        run: echo "$STEPS_CONTEXT"
       # - name: Upload Tesults Token
       #   uses: actions/upload-artifact@v4
       #   with:
@@ -85,7 +101,7 @@ jobs:
       image: mcr.microsoft.com/playwright:v${{ needs.set_job_params.outputs.pw-version }}-jammy
     steps:
 
-      
+
       - name: Dump GitHub context
         env:
           GITHUB_CONTEXT: ${{ toJson(github) }}
