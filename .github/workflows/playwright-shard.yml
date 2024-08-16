@@ -49,6 +49,7 @@ jobs:
       - name: Create Tesults Token
         run: node ./.scripts/create-delete-branch-target.js create
 
+       # echo "PW_TESULTS_TOKEN=$(cat tesultsToken.txt)" >> $GITHUB_ENV
       - name: Set Tesults Token Output
         id: set_tesults_token
         run: echo "TESULTS_TOKEN=$(cat tesultsToken.txt)" >> $GITHUB_OUTPUT
@@ -78,6 +79,8 @@ jobs:
         shardIndex: [1, 2, 3, 4]
         shardTotal: [4]
     runs-on: ubuntu-latest
+    env:
+      PW_TESULTS_TOKEN: ${{ needs.set_job_params.outputs.tesults-token }}
     container:
       image: mcr.microsoft.com/playwright:v${{ needs.set_job_params.outputs.pw-version }}-jammy
     steps:
@@ -94,8 +97,8 @@ jobs:
       # - name: Set Tesults Target
       #   run: echo "PW_TESULTS_TOKEN=$(cat tesultsToken.txt)" >> $GITHUB_ENV
 
-      - name: Set Tesults Target Environment Variable
-        run: echo "PW_TESULTS_TOKEN=${{ needs.set_job_params.outputs.tesults-token }}" >> $GITHUB_ENV
+      # - name: Set Tesults Target Environment Variable
+      #   run: echo "PW_TESULTS_TOKEN=${{ needs.set_job_params.outputs.tesults-token }}" >> $GITHUB_ENV
 
       - name: Run Tests
         run: yarn test:ci --shard=${{ matrix.shardIndex }}/${{ matrix.shardTotal }}
