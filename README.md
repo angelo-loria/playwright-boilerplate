@@ -43,7 +43,7 @@ I've made some changes to the default Github Actions workflow that Playwright ge
 ### Test Execution
 Test execution takes place in a job called [playwright_test](https://github.com/angelo-loria/playwright-boilerplate/blob/main/.github/workflows/playwright-shard.yml#L21).
 
-* I'm using [Playwright's Docker container](https://playwright.dev/docs/ci-intro#via-containers) in Actions to avoid having to install browsers and system dependencies on each Actions run. You do have to watch that the container version matches the version of Playwright that you're on when using the container, though.
+* I'm using [Playwright's Docker container](https://playwright.dev/docs/ci-intro#via-containers) in Actions to avoid having to install browsers and system dependencies on each Actions run. The container version is grabbed from the Playwright version on the `node_modules` directory.
 
 * I'm using Playwright's [sharding feature](https://playwright.dev/docs/test-shardinghttps://playwright.dev/docs/test-sharding) to run the tests in parallel. [See line 25 of the Actions workflow for the matrix configuration](https://github.com/angelo-loria/playwright-boilerplate/blob/main/.github/workflows/playwright-shard.yml#L25) and [line 64 for the step that runs the tests in parallel](https://github.com/angelo-loria/playwright-boilerplate/blob/main/.github/workflows/playwright-shard.yml#L64). Output from sharded tests is uploaded for use in the reporting job. 
 
