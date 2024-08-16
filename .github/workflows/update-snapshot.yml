@@ -10,50 +10,47 @@ env:
     NODEJS_VERSION: 20
 
 jobs:
-    update_snapshots:
-        name: Update Snapshots
-        runs-on: ubuntu-latest
+  set_job_params:
+    name: Set Job Params
+    runs-on: ubuntu-latest
+    outputs:
+      pw-version: ${{ steps.set_version.outputs.PW_VERSION }}
+    steps:
+      - uses: actions/checkout@v4
+              
+      - name: Yarn Install
+        run: yarn install --mode=skip-build
 
-        steps:
-        - uses: actions/checkout@v4
-        
-        - name: Setup NodeJS SDK ${{ env.NODEJS_VERSION }}
-          uses: actions/setup-node@v4
-          with:
-            cache: yarn
-            cache-dependency-path: yarn.lock
-            node-version: ${{ env.NODEJS_VERSION }}
+      - name: Get Playwright Package Version
+        id: get-version
+        uses: beaconbrigade/package-json-version@v0.3.1
+        with:
+          path: node_modules/playwright
 
-        - name: Yarn Install
-          run: yarn install
-            
-          # caching playwright browsers, see https://github.com/microsoft/playwright/issues/7249
-        - name: Store Playwright Version 
-          run: |
-            PLAYWRIGHT_VERSION=$(npm ls @playwright/test | grep @playwright | sed 's/.*@//')
-            echo "Playwright Version: $PLAYWRIGHT_VERSION"
-            echo "PLAYWRIGHT_VERSION=$PLAYWRIGHT_VERSION" >> $GITHUB_ENV
-    
-        - name: Cache Browsers for Playwright Version
-          id: cache-playwright-browsers
-          uses: actions/cache@v4
-          with:
-            path: ~/.cache/ms-playwright
-            key: playwright-browsers-${{ env.PLAYWRIGHT_VERSION }}
-    
-        - name: Install Playwright Browsers
-          if: steps.cache-playwright-browsers.outputs.cache-hit != 'true'
-          run: yarn playwright install --with-deps
-    
-        - name: Install Playwright Dependencies
-          if: steps.cache-playwright-browsers.outputs.cache-hit == 'true'
-          run: yarn playwright install-deps
-        
-        - name: Update Snapshots
-          run: yarn test --grep snapshot --update-snapshots --reporter=list
+      - name: Set Package Version
+        id: set_version
+        run: echo "PW_VERSION=${{ steps.get-version.outputs.version }}" >> $GITHUB_OUTPUT
 
-        - name: Commit and Push Snapshots
-          uses: stefanzweifel/git-auto-commit-action@v5
-          with:
-            commit_message: Update Playwright Snapshots
-            file_pattern: "tests/visual/*.png"
+  update_snapshots:
+    name: Update Snapshots
+    needs: set_job_params
+    runs-on: ubuntu-latest
+    container:
+      image: mcr.microsoft.com/playwright:v${{ needs.set_job_params.outputs.pw-version }}-jammy
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Yarn Install
+      run: yarn install
+
+    - name: Update Snapshots
+      run: yarn test --grep snapshot --update-snapshots --reporter=list
+      env:
+        HOME: /root # required for playwright to run in container
+
+    - name: Commit and Push Snapshots
+      uses: stefanzweifel/git-auto-commit-action@v5
+      with:
+        commit_message: Update Playwright Snapshots
+        file_pattern: "tests/visual/*.png"
