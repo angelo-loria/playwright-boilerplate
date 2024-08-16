@@ -20,14 +20,16 @@ env:
   LH_TESULTS_API_TOKEN: ${{ secrets.LH_TESULTS_API_TOKEN }}
 
 jobs:
-  create_tesults_target:
-    name: Create Tesults Target
+  set_job_params:
+    name: Set Job Params
     runs-on: ubuntu-latest
+    outputs:
+      pw-version: ${{ steps.set_version.outputs.PW_VERSION }}
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       
       - name: Setup NodeJS SDK ${{ env.NODEJS_VERSION }}
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
           cache: yarn
           cache-dependency-path: yarn.lock
@@ -52,21 +54,48 @@ jobs:
           name: tesultsToken
           path: tesultsToken.txt
 
+      - name: Get Playwright Package Version
+        id: get-version
+        uses: beaconbrigade/package-json-version@v0.3
+        with:
+          path: node_modules/playwright
+
+      - name: Write Version to File
+        run: echo "${{ steps.get-version.outputs.version }}" > playwrightPackageVersion.txt
+
+      # - name: Upload Playwright Package Version
+      #   uses: actions/upload-artifact@v4
+      #   with:
+      #     name: playwrightPackageVersion
+      #     path: playwrightPackageVersion.txt
+      #     retention-days: 10
+
+      #     - name: Download Playwright Package Version
+      #     uses: actions/download-artifact@v4
+      #     with:
+      #       name: playwrightPackageVersion
+      #       path: ${{ env.WORKING_DIRECTORY }}
+      
+      - name: Set Package Version
+        id: set_version
+        run: | 
+          echo "PW_VERSION=$(cat playwrightPackageVersion.txt)" >> $GITHUB_OUTPUT
+
   playwright_test:
     name: Playwright Test
-    needs: create_tesults_target
+    needs: set_job_params
     strategy:
       fail-fast: false
       matrix:
         shard: [1/4, 2/4, 3/4, 4/4]
     runs-on: ubuntu-latest
     container:
-      image: mcr.microsoft.com/playwright:v1.46.0-jammy
+      image: mcr.microsoft.com/playwright:v${{ needs.set_job_params.outputs.pw-version }}-jammy
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
 
       - name: Setup NodeJS SDK ${{ env.NODEJS_VERSION }}
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
           cache: yarn
           cache-dependency-path: yarn.lock
@@ -76,7 +105,7 @@ jobs:
         run: yarn install
 
       - name: Download Tesults Token Artifact
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4
         with:
           name: tesultsToken
       
@@ -91,9 +120,9 @@ jobs:
 
       - name: Upload blob report to GitHub Actions Artifacts
         if: always()
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
-          name: all-blob-reports
+          name: all-blob-reports-${{ matrix.shard }}
           path: blob-report/
           retention-days: 10
         
@@ -114,10 +143,10 @@ jobs:
     runs-on: ubuntu-latest
     
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
     
     - name: Setup NodeJS SDK ${{ env.NODEJS_VERSION }}
-      uses: actions/setup-node@v3
+      uses: actions/setup-node@v4
       with:
         cache: yarn
         cache-dependency-path: yarn.lock
@@ -127,25 +156,26 @@ jobs:
       run: yarn install
     
     - name: Download blob reports from GitHub Actions Artifacts
-      uses: actions/download-artifact@v3
+      uses: actions/download-artifact@v4
       with:
-        name: all-blob-reports
+        pattern: all-blob-reports-*
+        merge-multiple: true
         path: all-blob-reports
     
     # test-results directory is only created when a test fails, if all pass there is no dir to download
-    - name: Check for test-results Artifact
-      uses: xSAVIKx/artifact-exists-action@v0
-      id: check-artifact
-      with:
-        name: test-results
+    # - name: Check for test-results Artifact
+    #   uses: xSAVIKx/artifact-exists-action@v0
+    #   id: check-artifact
+    #   with:
+    #     name: test-results
 
-    # TODO - watch for upcoming ignore feature on this so that the above step can be removed
-    - name: Download test-results from GitHub Actions Artifacts
-      uses: actions/download-artifact@v3
-      if: ${{ steps.check-artifact.outputs.exists == 'true' }}
-      with:
-        name: test-results
-        path: test-results
+    # # TODO - watch for upcoming ignore feature on this so that the above step can be removed
+    # - name: Download test-results from GitHub Actions Artifacts
+    #   uses: actions/download-artifact@v3
+    #   if: ${{ steps.check-artifact.outputs.exists == 'true' }}
+    #   with:
+    #     name: test-results
+    #     path: test-results
       
     # xml report use by dorny-test-reporter
     - name: Merge into XML Report
@@ -164,10 +194,10 @@ jobs:
       run: npx playwright merge-reports --reporter html ./all-blob-reports 
         
     - name: Setup Pages
-      uses: actions/configure-pages@v3
+      uses: actions/configure-pages@v5
 
     - name: Upload HTML report for Pages
-      uses: actions/upload-pages-artifact@v2
+      uses: actions/upload-pages-artifact@v3
       with:
         name: github-pages
         path: playwright-report
@@ -175,7 +205,7 @@ jobs:
 
     - name: Deploy to GitHub Pages
       id: deployment
-      uses: actions/deploy-pages@v2
+      uses: actions/deploy-pages@v4
 
     - name: Message PR of Artifact Published
       if: ${{ always() && github.event_name == 'pull_request' }}
@@ -190,14 +220,15 @@ jobs:
   lighthouse_test:
     if: ${{ always() }}
     name: Lighthouse
+    needs: set_job_params
     runs-on: ubuntu-latest
     container:
-      image: mcr.microsoft.com/playwright:v1.46.0-jammy
+      image: mcr.microsoft.com/playwright:v${{ needs.set_job_params.outputs.pw-version }}-jammy
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       
       - name: Setup NodeJS SDK ${{ env.NODEJS_VERSION }}
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
           cache: yarn
           cache-dependency-path: yarn.lock
@@ -212,7 +243,7 @@ jobs:
           HOME: /root # required for playwright to run in container
         
       - name: Upload Lighthouse Report
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: lighthouse-report
           path: tests/lighthouse/reports
