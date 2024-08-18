@@ -1,8 +1,7 @@
 [![Playwright Test](https://github.com/angelo-loria/playwright-boilerplate/actions/workflows/playwright-shard.yml/badge.svg?branch=main)](https://github.com/angelo-loria/playwright-boilerplate/actions/workflows/playwright-shard.yml)
 [![View site - GH Pages](https://img.shields.io/badge/View_Latest_Test_Report-Github_Pages-9F2B68)](https://angelo-loria.github.io/playwright-boilerplate/)
 [![View site - GH Pages](https://img.shields.io/badge/View_Dashboard-Tesults-398cdb)](https://www.tesults.com/angelo-loria/acme-store-demo)
-https://img.shields.io/github/stars/angelo-loria/playwright-boilerplate
-
+![GitHub Repo stars](https://img.shields.io/github/stars/angelo-loria/playwright-boilerplate)
 
 
 # Playwright Page Object Model Boilerplate
