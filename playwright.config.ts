@@ -17,7 +17,7 @@ const buildName = `${process.env.GITHUB_SHA?.slice(0, 7)}-${
  * See https://playwright.dev/docs/test-configuration.
  */
 export default defineConfig({
-  timeout: 60_000,
+  //timeout: 60_000,
   testDir: "./tests",
   /* Run tests in files in parallel */
   fullyParallel: true,
@@ -46,28 +46,45 @@ export default defineConfig({
   /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
   use: {
     /* Base URL to use in actions like `await page.goto('/')`. */
-    baseURL: "https://demo.vercel.store/",
+    baseURL: "https://app-qa-newton.boostresults.com/",
     /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
     trace: "retain-on-failure",
     /* Set custom id attribute */
     testIdAttribute: "id",
     /* Retain video on failure */
+    screenshot: "only-on-failure",
     video: "retain-on-failure",
+    headless: true,
   },
 
   /* Configure projects for major browsers */
   projects: [
     {
+      name: 'setup',
+      testMatch: /.*\.setup\.ts/,
+      use:
+      {
+        ...devices['Desktop Chrome'],
+        // email: process.env.EMAIL,
+        // password: process.env.PASSWORD,
+        ignoreHTTPSErrors: true
+      }
+    },
+    {
       name: "chromium",
-      use: { ...devices["Desktop Chrome"] },
-      testIgnore: /lighthouse.spec.ts/,
+      use: { 
+        ...devices["Desktop Chrome"], 
+        ignoreHTTPSErrors: true,
+        storageState: process.env.AUTHFILE
+      },
+      dependencies: ['setup']
     },
 
-    {
-      name: "firefox",
-      use: { ...devices["Desktop Firefox"] },
-      testIgnore: [/.*axe.spec.ts/, /lighthouse.spec.ts/],
-    },
+    // {
+    //   name: "firefox",
+    //   use: { ...devices["Desktop Firefox"] },
+    //   testIgnore: [/.*axe.spec.ts/, /lighthouse.spec.ts/],
+    // },
 
     // {
     //   name: "webkit",

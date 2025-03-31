@@ -1,5 +1,4 @@
 import { BasePage } from "../base.page";
-import ProductCards from "../components/productCards";
 import { escape } from "querystring";
 
 type Collections =
@@ -16,8 +15,8 @@ type Collections =
   | "Shirts"
   | "Stickers";
 
-export default class SearchPage extends BasePage {
-  readonly productCards = new ProductCards(this.page).host;
+export default class ClientsPage extends BasePage {
+  //readonly productCards = new ProductCards(this.page).host;
 
   async open(searchQuery = "") {
     await super.open(`/search?q=${escape(searchQuery)}`);

@@ -1,0 +1,59 @@
+{
+  "cookies": [
+    {
+      "name": "ai_user",
+      "value": "RV0rsB7X9Oj1xTJF16E5py|2025-03-31T20:29:47.556Z",
+      "domain": "app-qa-newton.boostresults.com",
+      "path": "/",
+      "expires": 1774988987.556801,
+      "httpOnly": false,
+      "secure": true,
+      "sameSite": "None"
+    },
+    {
+      "name": "x-ms-cpim-csrf",
+      "value": "cmJwNXBmNy9VZUtTYU5abW8zbnZ5dEttOTNDaVBxL3J4aFZocU9ueFllZ3pFZGJsRVRpQUtRdDB4K0JWdGNWQlRZNzFwVjlpZm1nMGpzRC9BckRnWXc9PTsyMDI1LTAzLTMxVDIwOjMwOjI1LjY5MjMzNzFaO3RlWmo2bDNaakFnYkhkNGRUR3hmbHc9PTt7Ik9yY2hlc3RyYXRpb25TdGVwIjoxfQ==",
+      "domain": ".login-newton.boostresults.com",
+      "path": "/",
+      "expires": -1,
+      "httpOnly": true,
+      "secure": true,
+      "sameSite": "None"
+    },
+    {
+      "name": "x-ms-cpim-sso:sidiswebnewton.onmicrosoft.com_0",
+      "value": "m1.8i1sZzgzj2AmZyVI.HnQuyOTZDP8GTHh0FR6tLQ==.0.W6zyBBcVRNT2ScCYCGNaNtq2rY5Jt7iWElU0I6kurGIy0OkcsKl6pub0BpNO+7rmHJI8LeTm9VUQWnyes20vT7rP+QVZbal14P3Zg+7y9hmNi3F+Cf7zC7DPWM7f1qLIeAyqjda0PpFXitp9fm4WBSzCxDegUeUnIK5ZeOIqdujIy69LOexoai1ZNXQ6b8oa4S4/cKKrlYle6K/Uc+XQOpmE2WC1ywprFj8qSn/Z+7koeLmHiabxzOne2lQ2rv+o/ucP4IzvnhATacGrTfhBZ1doPfD2JsWWuOsiSccq0tjUkxLAm3bxR05UL/h4aW/jbI9LB8k5WtAZSc6uC00gko+bNq5b6GXCe++s9PxSrRTzKIKsTveg5M2Xtvy/vkvGUpJfvgCQ/i9m6mNqorgrPJOnC1DHKjeYEpdiO7A5hr+xGMCNYjVHH9B4IbmMMCWsXLL6hnFNXXi0NTQhsxrSC8iciNqbsX9fG6Ft8s3SIurvJqv60AuERxGglAx3I7ucpJDGWQxTcLD1OzJ9ul5oPBHnzQQXfTs=",
+      "domain": ".login-newton.boostresults.com",
+      "path": "/",
+      "expires": -1,
+      "httpOnly": true,
+      "secure": true,
+      "sameSite": "None"
+    },
+    {
+      "name": "ai_session",
+      "value": "gXri3wf2RJQYy54F26Tc7l|1743452987566|1743452996732",
+      "domain": "app-qa-newton.boostresults.com",
+      "path": "/",
+      "expires": 1743454796.733253,
+      "httpOnly": false,
+      "secure": true,
+      "sameSite": "None"
+    }
+  ],
+  "origins": [
+    {
+      "origin": "https://app-qa-newton.boostresults.com",
+      "localStorage": [
+        {
+          "name": "unleash:repository:repo",
+          "value": "[{\"name\":\"INT-798-health-check-killswitch\",\"enabled\":true,\"variant\":{\"name\":\"disabled\",\"enabled\":false,\"feature_enabled\":true,\"featureEnabled\":true},\"impressionData\":false}]"
+        },
+        {
+          "name": "unleash:repository:sessionId",
+          "value": "\"529538238\""
+        }
+      ]
+    }
+  ]
+}
