@@ -6,7 +6,7 @@ dotenv.config();
 const authfile: string = './.auth/user.json';
 
 setup('Authentication by UI', async ({ page }) => {
-    //setup.slow();
+    setup.slow();
 
     const loginPage: LoginPage = new LoginPage(page);
 

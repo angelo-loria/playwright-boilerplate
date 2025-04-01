@@ -1,6 +1,10 @@
 import { test, expect } from "../../pageObjects/pageFixture";
 
 test.describe("Home page", () => {
+    test.beforeEach(async ({ homePage }) => {
+        await homePage.open();
+    });
+
     test("sidebar is visible", async ({ homePage }) => {
         expect(await homePage.sideBar.host).toBeVisible();
         for (let menu of Object.values(homePage.sideBar.menus)) {
@@ -9,6 +13,6 @@ test.describe("Home page", () => {
     });
 
     test("nav bar is visible", async ({ homePage }) => {
-        expect(await homePage.navBar.host.isVisible()).toBe(true);
+        expect(await homePage.navBar.host).toBeVisible();
     });
 });

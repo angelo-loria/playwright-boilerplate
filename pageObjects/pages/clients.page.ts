@@ -1,28 +1,11 @@
 import { BasePage } from "../base.page";
-import { escape } from "querystring";
-
-type Collections =
-  | "All"
-  | "Bags"
-  | "Drinkware"
-  | "Electronics"
-  | "Footware"
-  | "Headwear"
-  | "Hoodies"
-  | "Jackets"
-  | "Kids"
-  | "Pets"
-  | "Shirts"
-  | "Stickers";
 
 export default class ClientsPage extends BasePage {
-  //readonly productCards = new ProductCards(this.page).host;
 
-  async open(searchQuery = "") {
-    await super.open(`/search?q=${escape(searchQuery)}`);
-  }
+  readonly quickSearchInput = this.page.locator('input[placeholder="Quick search"]');
+  readonly tableRows = this.page.locator('table tbody tr');
 
-  async openCollection(collection: Collections) {
-    await super.open(`/search/${collection}`);
+  async open() {
+    await super.open('/clients');
   }
 }

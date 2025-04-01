@@ -1,3 +1,4 @@
+import "dotenv/config";
 import { defineConfig, devices } from "@playwright/test";
 
 // buildName is used for Tesults build name
@@ -17,7 +18,7 @@ const buildName = `${process.env.GITHUB_SHA?.slice(0, 7)}-${
  * See https://playwright.dev/docs/test-configuration.
  */
 export default defineConfig({
-  //timeout: 60_000,
+  timeout: 60_000,
   testDir: "./tests",
   /* Run tests in files in parallel */
   fullyParallel: true,
@@ -55,6 +56,7 @@ export default defineConfig({
     screenshot: "only-on-failure",
     video: "retain-on-failure",
     headless: true,
+    permissions: ["geolocation"],
   },
 
   /* Configure projects for major browsers */
